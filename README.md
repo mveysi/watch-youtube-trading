@@ -73,8 +73,8 @@ Tüm komutları **PowerShell**'de çalıştır (Başlat menüsü → "PowerShell
 **1) Repoyu indir**
 
 ```powershell
-git clone https://github.com/<KULLANICI_ADI>/<REPO_ADI>.git
-cd <REPO_ADI>
+git clone https://github.com/mveysi/watch-youtube-trading.git
+cd watch-youtube-trading
 ```
 
 **2) Sanal ortam oluştur ve etkinleştir**
@@ -133,8 +133,8 @@ Seçenek listesi görünüyorsa kurulum tamam. ✅
 ## 4. Kurulum: macOS / Linux
 
 ```bash
-git clone https://github.com/<KULLANICI_ADI>/<REPO_ADI>.git
-cd <REPO_ADI>
+git clone https://github.com/mveysi/watch-youtube-trading.git
+cd watch-youtube-trading
 
 python3 -m venv .venv
 source .venv/bin/activate

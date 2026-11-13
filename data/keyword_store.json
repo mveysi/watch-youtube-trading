@@ -1,0 +1,428 @@
+{
+  "version": 1,
+  "keywords": [
+    {
+      "phrase": "look at",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "here we see",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "here we have",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "here we go",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "as shown",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "as you can see",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "let me show",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "i'll show you",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "notice",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "zoom in",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "zoom out",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "diagram",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "graph",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "chart",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "code",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "screen",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "table",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "slide",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "formula",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "equation",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "this is",
+      "weight": 0.7,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "this shows",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "this represents",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "right here",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "over here",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "highlight",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "point to",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "click on",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "terminal",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "output",
+      "weight": 0.8,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "result",
+      "weight": 0.7,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "example",
+      "weight": 0.7,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "demo",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "visualization",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "plot",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "architecture",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "pipeline",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "screenshot",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "ekranda",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "ekrana",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "grafikte",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "grafiğe",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "grafiği",
+      "weight": 0.8,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "çiziyorum",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "çizelim",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "işaretliyorum",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "işaretledim",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "işaretleyelim",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "gösteriyorum",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "göstereyim",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "gösterelim",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "dikkat edersen",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "dikkat edecek olursak",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "şuraya bak",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "buraya bak",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "şekilde gösterelim",
+      "weight": 1.0,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "örnek",
+      "weight": 0.7,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "tablo",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    },
+    {
+      "phrase": "slayt",
+      "weight": 0.9,
+      "source": "builtin",
+      "occurrences": 1
+    }
+  ],
+  "domain_clusters": {
+    "coding": [
+      "function",
+      "variable",
+      "class",
+      "method",
+      "import",
+      "error",
+      "debug",
+      "refactor"
+    ],
+    "math": [
+      "integral",
+      "derivative",
+      "matrix",
+      "vector",
+      "proof",
+      "theorem",
+      "solve"
+    ],
+    "data": [
+      "dataset",
+      "column",
+      "row",
+      "model",
+      "accuracy",
+      "loss",
+      "training",
+      "inference"
+    ],
+    "design": [
+      "layout",
+      "component",
+      "color",
+      "margin",
+      "padding",
+      "responsive",
+      "ui"
+    ],
+    "trading": [
+      "destek",
+      "direnç",
+      "trend",
+      "mum",
+      "fitil",
+      "kırılım",
+      "formasyon",
+      "hacim",
+      "fibonacci",
+      "rsi",
+      "macd",
+      "indikatör",
+      "stop",
+      "hedef",
+      "likidite",
+      "support",
+      "resistance",
+      "candle",
+      "breakout",
+      "bos",
+      "msb",
+      "choch",
+      "swing",
+      "impuls",
+      "düzeltme",
+      "orderblock",
+      "fvg"
+    ]
+  }
+}

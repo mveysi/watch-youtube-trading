@@ -1,0 +1,300 @@
+{
+  "description": "Trading terimleri sözlüğü. 'whisper_prompt' Groq Whisper'a kelime ipucu olarak gönderilir. 'asr_corrections' YouTube Türkçe otomatik altyazısının İngilizce terimleri nasıl bozduğunu listeler — OTOMATİK UYGULANMAZ (ör. 'hayır' gerçekten 'hayır' da olabilir); wiki yazılırken bağlam + ekran görüntüsüyle teyit edilerek kullanılır. Yeni videolarda yeni hatalar görüldükçe buraya eklenir.",
+  "whisper_prompt": "Price Action eğitimi. Terimler: Price Action, trend, boğa trendi, ayı trendi, yatay trend, Higher High (HH), Higher Low (HL), Lower High (LH), Lower Low (LL), swing high, swing low, equal high, equal low, Break of Structure (BOS), Market Structure Break (MSB), Change of Character (CHoCH), Higher Timeframe (HTF), Lower Timeframe (LTF), impuls, düzeltme, correction, destek, direnç, mum, fitil, long, short, stop loss, take profit, risk reward ratio, Smart Money, order block, mitigation, likidite, fake breakout, akümülasyon, dağıtım, Bitcoin, Forex, parite, Supply, Demand, supply zone, demand zone, Rally, Base, Drop, konsolidasyon, manipülasyon, imbalance, Fair Value Gap, Optimal Trade Entry, Fibonacci, Equilibrium, entry.",
+  "asr_corrections": [
+    {
+      "heard": [
+        "Play Station",
+        "play station",
+        "prenses",
+        "pırasa",
+        "prize",
+        "preaction",
+        "Press"
+      ],
+      "means": "Price Action"
+    },
+    {
+      "heard": [
+        "tren",
+        "trenler",
+        "Trendy"
+      ],
+      "means": "trend"
+    },
+    {
+      "heard": [
+        "Reis",
+        "Rize"
+      ],
+      "means": "risk / Price Action (bağlama göre)"
+    },
+    {
+      "heard": [
+        "Smart mani",
+        "smartman"
+      ],
+      "means": "Smart Money"
+    },
+    {
+      "heard": [
+        "risk River traş"
+      ],
+      "means": "risk reward ratio"
+    },
+    {
+      "heard": [
+        "triggerlar",
+        "treylerin",
+        "tiroid etmek"
+      ],
+      "means": "trader'lar / trade etmek"
+    },
+    {
+      "heard": [
+        "Hayır hayır",
+        "hayır hayır",
+        "Hay"
+      ],
+      "means": "Higher High (HH)"
+    },
+    {
+      "heard": [
+        "hayırlı",
+        "hayırlı olur"
+      ],
+      "means": "Higher Low (HL)"
+    },
+    {
+      "heard": [
+        "Lover ha",
+        "lor hay",
+        "Lover Hay"
+      ],
+      "means": "Lower High (LH)"
+    },
+    {
+      "heard": [
+        "lorlu",
+        "lo verlo",
+        "overlove",
+        "navır Love"
+      ],
+      "means": "Lower Low (LL)"
+    },
+    {
+      "heard": [
+        "Hayır Time frame",
+        "hayır Tayyip",
+        "Hayır Tayfur"
+      ],
+      "means": "Higher Timeframe (HTF)"
+    },
+    {
+      "heard": [
+        "Lover Time frame",
+        "love the time",
+        "Lord iframe",
+        "nover Time frame",
+        "lor Time frame"
+      ],
+      "means": "Lower Timeframe (LTF)"
+    },
+    {
+      "heard": [
+        "16 zaman dilimi",
+        "26 zaman dilimi"
+      ],
+      "means": "alt zaman dilimi"
+    },
+    {
+      "heard": [
+        "Boz",
+        "boş",
+        "gostak",
+        "gostr",
+        "kol structor",
+        "Break of structural",
+        "Of structural",
+        "rekor structural",
+        "Crack of structural",
+        "braco"
+      ],
+      "means": "Break of Structure (BOS)"
+    },
+    {
+      "heard": [
+        "Market satır bile",
+        "markete saçı Break",
+        "Market traktörü Black",
+        "Market Roger Bacon",
+        "mezhebe",
+        "Merkez Taç'ın Break",
+        "Market rockçı Bratz"
+      ],
+      "means": "Market Structure Break (MSB)"
+    },
+    {
+      "heard": [
+        "çencu karakter",
+        "cok karakter",
+        "Yok yok karakter",
+        "kendi o karakter"
+      ],
+      "means": "Change of Character (CHoCH)"
+    },
+    {
+      "heard": [
+        "corek",
+        "Kore Çin",
+        "korrosion",
+        "Collection",
+        "13 yıldır",
+        "borax yıldır",
+        "rekat"
+      ],
+      "means": "correction (düzeltme)"
+    },
+    {
+      "heard": [
+        "impose",
+        "inpul",
+        "imposta",
+        "birim post",
+        "birim Plus",
+        "Pusula",
+        "bitki hareketi",
+        "etki hareketi",
+        "12 hareketi"
+      ],
+      "means": "impuls / itki hareketi"
+    },
+    {
+      "heard": [
+        "love my singing singing love",
+        "single",
+        "Civic Ice"
+      ],
+      "means": "swing high / swing low"
+    },
+    {
+      "heard": [
+        "eşit lekeler",
+        "eşit tipler",
+        "kul of"
+      ],
+      "means": "equal highs / equal lows"
+    },
+    {
+      "heard": [
+        "Kağıt forsgren"
+      ],
+      "means": "fake breakout (muhtemel)"
+    },
+    {
+      "heard": [
+        "htf ltf",
+        "hpb ltf"
+      ],
+      "means": "HTF / LTF"
+    },
+    {
+      "heard": [
+        "Training with a logarithmic"
+      ],
+      "means": "TradingView logaritmik ölçek"
+    },
+    {
+      "heard": [
+        "bu iş bir iş bu işi Yapı"
+      ],
+      "means": "demand / supply yapısı (muhtemel)"
+    },
+    {
+      "heard": [
+        "bu işkence lastik"
+      ],
+      "means": "bullish / bearish candlestick (muhtemel)"
+    },
+    {
+      "heard": [
+        "Demend",
+        "Dement",
+        "Diment",
+        "Dimon",
+        "dimen zon",
+        "dinozor"
+      ],
+      "means": "Demand (talep)"
+    },
+    {
+      "heard": [
+        "Splay",
+        "Saplayan",
+        "sapla 110",
+        "saplayıp",
+        "saklaya bölgesi"
+      ],
+      "means": "Supply (arz)"
+    },
+    {
+      "heard": [
+        "Supply Entiment",
+        "Saplayan Diment",
+        "sapla 110v dinozorları"
+      ],
+      "means": "Supply and Demand"
+    },
+    {
+      "heard": [
+        "Rally beyaz",
+        "bezelye",
+        "beyz",
+        "Bayez",
+        "bez",
+        "Baze"
+      ],
+      "means": "Base / Rally Base"
+    },
+    {
+      "heard": [
+        "Drop Facebook",
+        "do Baby Drop"
+      ],
+      "means": "Drop Base Drop"
+    },
+    {
+      "heard": [
+        "imalat bölgesi",
+        "İmran",
+        "imbalans"
+      ],
+      "means": "imbalance"
+    },
+    {
+      "heard": [
+        "optimal triandra",
+        "Optimal Trade Enter",
+        "optimadent",
+        "otele"
+      ],
+      "means": "Optimal Trade Entry (OTE)"
+    },
+    {
+      "heard": [
+        "kibar çalabilirsin",
+        "birlikte bonacchi"
+      ],
+      "means": "Fibonacci çekebilirsin"
+    },
+    {
+      "heard": [
+        "su topu",
+        "sutopu",
+        "Stok"
+      ],
+      "means": "stop (stop loss)"
+    }
+  ],
+  "whisper_known_issues": "Whisper (whisper-large-v3-turbo) uzun seste tekrar döngülerine girebilir ('BASE BASE BASE...') ve bazı bölümleri boş bırakabilir; YouTube altyazısıyla karşılaştırarak tamamla."
+}

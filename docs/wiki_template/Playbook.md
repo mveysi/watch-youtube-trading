@@ -52,5 +52,7 @@ Kural formatı:
 
 İki kaynak aynı konuda farklı kural verirse ikisi de yazılır; hangisinin geçerli olduğu **kullanıcıya sorulur**, kendi başına seçilmez.
 
+Ders serileri üst üste inşa edilir: ilk dersler kavramı basit anlatır, sonrakiler inceltir. Bu yüzden önerilen varsayılan, **aynı eğitmenin sonraki, konuya özel dersidir**. Karar verilince eski tanımı kullanan tüm konu sayfaları da düzeltilir.
+
 | Konu | Kaynak A (kural) | Kaynak B (kural) | Karar |
 |------|------------------|------------------|-------|

@@ -62,7 +62,7 @@ Eğitmen bir sayı vermediyse **uydurulmaz**: kural yazılır, eksik parametre a
 - Sözlüğe eklenen altyazı hataları: 4
 ```
 
-Bu örnekteki gibi bir **çelişki** çıktığında karar senin. Aynı eğitmenin sonraki, konuya özel dersi genelde daha kesindir, ama Claude bunu kendi başına seçmez, sana sorar.
+Bu örnekteki gibi bir **çelişki** çıktığında karar senin. Aynı eğitmenin sonraki, konuya özel dersi genelde daha kesindir, ama Claude bunu kendi başına seçmez, sana sorar. (Bu örnekte karar: **Ders 5 geçerli**. MSB = trende ters yerel kırılım, CHoCH = korunması gereken seviyenin kırılması = trend dönüşü. Seriyi baştan işlerken aynı çelişki 5. derste tekrar çıkacak; aynı kararı verebilirsin.)
 
 **Seri sonunda kontrol:**
 - [ ] Serideki tüm videolar `docs/wiki/Videos.md` içinde kayıtlı.

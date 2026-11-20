@@ -184,7 +184,7 @@ For every video:
 2. **Measurable or nothing:** a rule must be codeable without guessing ("gövde kapanışı önceki swing high üzerinde", not "güçlü kırılım"). If the instructor gives no number/threshold, **do not invent one** — leave the parameter as `?` and open a question.
 3. **Güven:** `açık kural` only if the instructor explicitly states/shows it (cite the minute). Your own formalisation of a looser explanation is `türetilmiş`.
 4. **Open questions:** close those this video answers (status `cevaplandı`, video ID, the answer with minute). Add new ones with the next free `Q-NNN`.
-5. **Contradictions:** if this video conflicts with an existing rule, do **not** silently overwrite — add a row to *Çelişkiler*, mark the rule `çelişkili`, and ask the user which applies.
+5. **Contradictions:** if this video conflicts with an existing rule, do **not** silently overwrite — add a row to *Çelişkiler*, mark the rule `çelişkili`, and ask the user which applies. Course series build on themselves (early lessons simplify, later ones refine), so your recommendation should normally be the **later, topic-specific lesson by the same instructor**, but the user still decides. Once the user decides, fill the *Karar* cell, set the rule back to its new definition (Güven no longer `çelişkili`), and fix every older topic page, terminology entry and pseudo-code block that still uses the overruled definition (`grep` the wiki for the term).
 6. In topic pages, the "Bot / Uygulama İçin Çıkarılabilir Kurallar" section should reference Playbook IDs (e.g. "→ MS-004") rather than restating rules differently.
 
 ---

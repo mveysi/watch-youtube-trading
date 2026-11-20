@@ -69,7 +69,7 @@ Her adımın bir **kabul kriteri** var. Kriter sağlanmadan sonraki adıma geçi
 
 - 2. dersin (`oQhdnKzsGyw`, "Market Yapısını Anlamak") 26:21–32:45 bölümünde eğitmen günlük BTC grafiğinde (2021 – Mart 2022) trendi çiziyor ve dönüş noktalarını etiketliyor. Kareler: `output/oQhdnKzsGyw/storyboard_page_004.jpg` ve `005.jpg` (yaklaşık 1640–1954 sn). Transcript: `output/oQhdnKzsGyw/transcript.txt`.
 - `beklenen/btc_1d_2021_2022.md` dosyasında **aday** bir liste hazır (planı hazırlayanın storyboard + transcript + Yahoo verisinden çıkardığı tahminler). Bunları storyboard karelerine ve gerçek mum verisine bakarak **doğrula**, tarihleri düzelt, belirsizleri "belirsiz" diye işaretle.
-- **Kabul:** kullanıcı listeyi onaylar → dosyanın başındaki durum `ONAYLANDI (tarih)` olur → ayrı commit → proje sahibi bu dosyayı **`main`'e alır** (dondurma). Bundan sonra `asama-2` dalında değiştirilirse otomatik kontrol kırmızı verir.
+- **Kabul:** kullanıcı listeyi onaylar → dosyanın başındaki durum satırı `> **Durum: ONAYLANDI (YYYY-AA-GG)**` olur (koruma kontrolü bu satıra bakar) → ayrı commit → proje sahibi bu dosyayı **`main`'e alır** (dondurma). Bundan sonra `asama-2` dalında değiştirilirse otomatik kontrol kırmızı verir.
 - **Olmazsa:** storyboard'da etiket okunamıyorsa video tekrar işlenebilir (`watch-youtube <URL> -o ./output -n 60 --keep-temp`) veya o dakikadan tek kare alınabilir (`ffmpeg -ss 1700 -i video.mp4 -frames:v 1 kare.jpg`).
 
 ### Adım 1: Veri katmanı (`data.py`)
@@ -165,6 +165,7 @@ Bu plan, kod yazılmadan önce yapılmış bir tahmindir; uygulamada farklı ç�
 |------|-----------|-------|------|
 | 2026-11-20 | Plan oluşturuldu | — | kullanıcı |
 | 2026-11-20 | §8 "Planı güncelleme" + bu günlük eklendi; sınırlar ve güven protokolü değiştirilemez ANAYASA.md'ye taşındı; koruma düzeneği (koruma_kontrol.py, GitHub kontrolü, izin ayarı örneği) ve DEVAM.md eklendi; dondurma = beklenen dosyasının main'e alınması | Diğer Claude'un önemli bir şeyi sessizce değiştirmesini önlemek; compact sonrası bağlam kaybını önlemek | kullanıcı |
+| 2026-11-20 | Dondurma işareti: koruma kontrolü sadece `> **Durum: ONAYLANDI (tarih)**` satırına bakar; GitHub kontrolü sadece asama-2 push/PR'larında çalışır; izin ayarına kök dosyalar eklendi | Açıklama metnindeki "ONAYLANDI" kelimesi Adım 0'ı yanlışlıkla engelliyordu (inceleme bulgusu) | kullanıcı |
 
 ## 9. Takılırsan
 

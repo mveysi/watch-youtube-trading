@@ -23,6 +23,8 @@ Planı uygulamak için Aşama 1'in çıktılarına da erişim gerekir (bkz. [PLA
 
 ## Nasıl başlanır
 
+> İki aşamanın birlikte nasıl ilerletileceği, dondurma ve proje sahibine ne gönderileceği: kök klasördeki **YOL_HARITASI.md**, bölüm 2.
+
 1. Repoyu güncelle ve ayrı dala geç:
    ```bash
    git pull

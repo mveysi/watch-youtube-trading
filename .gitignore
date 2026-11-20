@@ -7,3 +7,4 @@ tools/
 *.egg-info/
 cookies*.txt
 asama2_kripto_analiz/ciktilar/
+.claude/settings.local.json

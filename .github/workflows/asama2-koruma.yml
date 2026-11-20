@@ -1,0 +1,24 @@
+name: asama2-koruma
+
+# Aşama 2 dalında korunan dosyalar (ANAYASA.md §D) değişirse kırmızı verir.
+on:
+  push:
+    branches: [asama-2]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  koruma:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Koruma kontrolü
+        run: python asama2_kripto_analiz/koruma_kontrol.py --base origin/main

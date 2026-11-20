@@ -11,7 +11,7 @@ Turns a YouTube video into annotated JPEG storyboard grids + a saved transcript,
 
 The goal is not to summarise each lesson but to **grow one consistent body of knowledge**: every new lesson adds to, refines or corrects what the wiki already knows (course series build on themselves).
 
-0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying everything in `docs/wiki_template/` (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`) into it. If it exists but a template file is missing (e.g. `LearningLog.md` after an update), copy just that file.
+0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying everything in `docs/wiki_template/` (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`, `DEVAM.md`) into it. If it exists but a template file is missing (e.g. `LearningLog.md` after an update), copy just that file.
 1. Extract the video ID and check `docs/wiki/Videos.md` — if already analyzed, answer from the wiki instead.
 2. Run the pipeline (see **Running the pipeline**). Playlist URLs (`&list=...`) are fine — only the single video is fetched. **If `GROQ_API_KEY` is set, always use `--whisper -l <lang>`** (Turkish videos: `-l tr`).
 3. **Prepare before reading the lesson (active learning)** — see **Before the lesson**: run `playbook-check`, read the open/expected questions and the rules/pages related to this lesson's topic, and write down which questions this lesson might answer.
@@ -27,8 +27,9 @@ The goal is not to summarise each lesson but to **grow one consistent body of kn
 10. Add the video record to `docs/wiki/Videos.md`, update `docs/wiki/Index.md`, and update any series tracker page.
 11. Run `playbook-check --write`; fix every ✖ error before continuing (warnings: fix if they are real mistakes).
 12. **Append the lesson entry to `docs/wiki/LearningLog.md`** (format in that file) — append only, never rewrite older entries, never read the whole file. Its "Bilgi durumu" line comes from step 11.
-13. Report anything the pipeline likely missed (see **Coverage check**).
-14. **End with the Quality Report** (see **Quality Report**) — always, as the last thing in your reply.
+13. **Update `docs/wiki/DEVAM.md`** (resume note, max ~40 lines): last processed lesson, next lesson, pending user decisions, open problems, the bilgi durumu line. It is injected automatically after compaction/new session, so a future session can continue from it.
+14. Report anything the pipeline likely missed (see **Coverage check**).
+15. **End with the Quality Report** (see **Quality Report**) — always, as the last thing in your reply.
 
 ---
 

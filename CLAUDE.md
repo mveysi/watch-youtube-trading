@@ -7,13 +7,28 @@ Bu proje, YouTube ders videolarından **bilgi biriktiren** ve `docs/wiki/` için
 - **Aşama 1** (bu dosyanın konusu): YouTube → wiki/Playbook. Repo kökü.
 - **Aşama 2**: kripto analiz motoru, `asama2_kripto_analiz/` klasörü. O klasörde çalışırken `asama2_kripto_analiz/CLAUDE.md` ve `PLAN.md` geçerlidir; Aşama 2 işi Aşama 1 dosyalarını değiştirmez.
 
+## Devam notları (compact / yeni oturum koruması)
+
+Oturum açılışında, compact'tan ve resume'dan sonra `.claude/hooks/devam_notu.sh` devam notlarını otomatik olarak bağlama koyar. **Önce onları oku**, durumu onlara göre belirle. Notları güncel tutmak senin işin:
+- **Aşama 1:** `docs/wiki/DEVAM.md` (yoksa `docs/wiki_template/DEVAM.md`'den kopyala). Her ders işlendikten ve her kullanıcı kararından sonra güncelle: son ders, sıradaki ders, bekleyen kararlar, açık sorunlar, son bilgi durumu. En fazla ~40 satır.
+- **Aşama 2:** `asama2_kripto_analiz/DEVAM.md`. Her adım sonunda güncelle ve commit'le.
+- Notu "compact yapacağım" denmesini bekleyerek değil, **her kilometre taşında hemen** güncelle.
+
+## Aşama 2 dalını inceleme (proje sahibi isteyince)
+
+"asama-2 dalını incele" denirse, dala geçmeden:
+1. `git fetch origin` → `git diff --stat main...origin/asama-2` ve `git log --oneline main..origin/asama-2`
+2. Koruma kontrolü: `git worktree add <geçici klasör> origin/asama-2` içinde `python asama2_kripto_analiz/koruma_kontrol.py --base origin/main` (sonra worktree'yi kaldır).
+3. Özellikle şunları Türkçe özetle: ANAYASA/beklenen/klasör dışı değişiklik var mı, PLAN.md → Plan Değişiklik Günlüğü'ne yeni satır eklenmiş mi ve onaylı mı, kabul kriterleri gevşetilmiş mi, `DEVAM.md`'deki durum.
+4. `main`'e birleştirme yalnızca proje sahibi açıkça isterse.
+
 ## Genel Çalışma Kuralı
 
 Kullanıcı bir konu veya video hakkında soru sorduğunda şu sırayı takip et:
 
 ### 0. İlk kullanım
 
-`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki dosyaları (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`) oraya kopyala. Klasör varsa ama şablondaki bir dosya eksikse (ör. güncellemeden sonra `LearningLog.md`) sadece onu kopyala.
+`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki dosyaları (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`, `DEVAM.md`) oraya kopyala. Klasör varsa ama şablondaki bir dosya eksikse (ör. güncellemeden sonra `LearningLog.md`) sadece onu kopyala.
 
 ### 1. Önce wiki'yi kontrol et
 

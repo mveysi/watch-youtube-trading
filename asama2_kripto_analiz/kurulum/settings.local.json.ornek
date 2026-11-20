@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(**/asama2_kripto_analiz/ANAYASA.md)",
+      "Edit(**/asama2_kripto_analiz/koruma_kontrol.py)",
+      "Edit(**/.github/**)",
+      "Edit(**/.claude/settings.json)",
+      "Edit(**/.claude/settings.local.json)",
+      "Edit(**/.claude/hooks/**)",
+      "Edit(**/.claude/skills/**)",
+      "Edit(**/watch_youtube/**)",
+      "Edit(**/docs/wiki_template/**)",
+      "Edit(**/setup.py)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push origin main*)",
+      "Bash(git push origin HEAD:main*)"
+    ]
+  }
+}

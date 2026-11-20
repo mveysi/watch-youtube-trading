@@ -44,6 +44,7 @@ Playlist: `https://www.youtube.com/playlist?list=PLIKblNNaj9ePl_vLFa38zgu0cIdSiw
 - **Tek seri, sırayla.** Seri bitmeden başka eğitmenin videosu işlenmez (aynı kavrama farklı kurallar yazılmasın).
 - Wiki boş başlar; ilk videoda Claude `docs/wiki/` klasörünü şablondan oluşturur.
 - Repoyu güncellediysen (`git pull`) bir kez `pip install -e .` çalıştır; `playbook-check` komutu böyle kurulur.
+- **Compact koruması otomatik:** Claude her ders sonunda `docs/wiki/DEVAM.md` devam notunu günceller; oturum açılışında ve compact'tan sonra bu not Claude'a otomatik okutulur (`.claude/settings.json` içindeki hook). İlk açılışta Claude Code proje klasörüne "güven" (trust) sorarsa onayla, yoksa hook çalışmaz.
 - Bilgi durumunu kendin görmek istersen: `.venv\Scripts\playbook-check.exe`.
 - Altyazıda yeni bozuk terim çıkarsa Claude bunu `data/glossary_trading_tr.json` → `asr_corrections` içine ekler.
 - `whisper_prompt` (aynı dosyada) **kısa, doğal bir cümle** olarak kalmalı (en fazla ~250 karakter). Uzun terim listesi Whisper'ı tamamen bozar. Seri yeni bir konuya geçerse (ör. order block) cümledeki terimler güncellenebilir.

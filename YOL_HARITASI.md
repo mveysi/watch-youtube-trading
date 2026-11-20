@@ -83,6 +83,8 @@ Bu örnekteki gibi bir **çelişki** çıktığında karar senin. Aynı eğitmen
 
 ---
 
-## Sonraki faz (bu belgenin kapsamı dışında)
+## Sonraki faz: Aşama 2 (bu belgenin kapsamı dışında)
+
+Aşama 2'nin planı hazır: [asama2_kripto_analiz/PLAN.md](asama2_kripto_analiz/PLAN.md) (başlangıç: [asama2_kripto_analiz/README.md](asama2_kripto_analiz/README.md)). Aşama 1'den bağımsız, ayrı dalda (`asama-2`) yürütülür; ders işleme işini bölmez. Sadece plan ayrıca indirilebilir: `asama2-plan` dalı.
 
 Eğitim fazı bitince Playbook'taki ölçülebilir kurallar, Binance OHLCV verisi üzerinde **Python ile hesaplanacak** (swing noktaları, BOS/MSB, imbalance, Fibonacci/OTE). Grafik ekran görüntüsünden "göz kararı" okuma yerine bu sayısal katman, backtest'teki işlem kaçırma sorununu çözmenin asıl yolu.

@@ -2,6 +2,11 @@
 
 Bu proje, YouTube ders videolarından **bilgi biriktiren** ve `docs/wiki/` içinde Obsidian formatında saklayan bir sistemdir. Amaç dersleri tek tek özetlemek değil: her yeni ders mevcut bilgiye eklenir, onu inceltir veya düzeltir (seriler üst üste inşa edilir). Güncel bilgi konu sayfalarında ve `Playbook.md`'de, bilginin nasıl oluştuğu `LearningLog.md`'de durur.
 
+## Proje iki aşamalı
+
+- **Aşama 1** (bu dosyanın konusu): YouTube → wiki/Playbook. Repo kökü.
+- **Aşama 2**: kripto analiz motoru, `asama2_kripto_analiz/` klasörü. O klasörde çalışırken `asama2_kripto_analiz/CLAUDE.md` ve `PLAN.md` geçerlidir; Aşama 2 işi Aşama 1 dosyalarını değiştirmez.
+
 ## Genel Çalışma Kuralı
 
 Kullanıcı bir konu veya video hakkında soru sorduğunda şu sırayı takip et:

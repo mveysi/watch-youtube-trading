@@ -4,6 +4,12 @@ YouTube'daki eğitim videolarını **Claude'a "izletip"** öğrendiklerini düze
 
 Bir video linki verirsin. Araç videoyu indirir, **konuşulanları yazıya döker**, **ekranda gösterilen önemli anların (slayt, grafik, çizim) görüntülerini** toplar. Claude bunların hepsini inceleyip öğrendiklerini `docs/wiki/` klasörüne konu konu yazar. Sonra "BOS nedir?", "arz bölgesi nasıl çizilir?" gibi sorular sorduğunda Claude cevabı bu notlardan, hangi videodan öğrendiğini belirterek verir.
 
+> **Proje iki aşamalı:**
+> - **Aşama 1: Öğrenme** (bu README'nin konusu): YouTube derslerinden işlem kurallarını öğrenip `docs/wiki/Playbook.md` içinde biriktirir. Çalışır durumda.
+> - **Aşama 2: Kripto analiz** ([asama2_kripto_analiz/](asama2_kripto_analiz/)): Playbook'taki kuralları Binance mum verisi üzerinde Python ile hesaplayacak motor. **Şu an sadece plan.** Aşama 1'den bağımsızdır.
+>
+> **Sadece Aşama 2 planını indirmek için:** GitHub'da dal seçicisinden **`asama2-plan`** dalını seç → **Code → Download ZIP**. Komut satırından: `git clone -b asama2-plan --single-branch https://github.com/mveysi/watch-youtube-trading.git asama2-plan`
+
 > **Kimin için?** Bir konuyu (ör. borsa / Price Action eğitimi) YouTube videolarından öğrenip bu bilgiyi kalıcı, aranabilir ve ileride başka sistemlerde (ör. bir analiz botunda) kullanılabilir halde tutmak isteyenler için.
 
 ---
@@ -324,6 +330,11 @@ Wiki dosyaları (`docs/wiki/`):
 ├── data/
 │   ├── glossary_trading_tr.json  # Trading terimleri + bilinen altyazı hataları sözlüğü
 │   └── keyword_store.json        # Anahtar kelime deposu
+│
+├── asama2_kripto_analiz/         # AŞAMA 2 (plan): kripto analiz motoru planı, Aşama 1'den bağımsız
+│   ├── PLAN.md                   # Amaç, sınırlar, güven protokolü, adımlar, kabul kriterleri
+│   ├── CLAUDE.md                 # Claude'un bu klasördeki çalışma kuralları
+│   └── beklenen/                 # Kabul testinin doğru cevapları (koddan önce dondurulur)
 │
 ├── docs/
 │   ├── wiki_template/            # Boş başlangıç wiki'si (ilk kullanımda kopyalanır)

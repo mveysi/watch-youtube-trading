@@ -240,8 +240,9 @@ Her video için `output/<VIDEO_ID>/` klasörü oluşur (GitHub'a yüklenmez):
 | Dosya | İçerik |
 |------|--------|
 | `storyboard_page_001.jpg`, `002`… | 3×3 kare ızgaraları. Her karenin sol üstünde zaman damgası, altında o an konuşulan metin. |
-| `transcript.txt` | Tam transcript, ~30 saniyede bir `[dk:sn]` damgasıyla. Konuşmaya dayalı derslerde asıl bilgi burada. |
-| `transcript_raw.vtt` / `transcript_raw.srt` | Ham altyazı dosyası (YouTube ve/veya Whisper) |
+| `transcript.txt` | Tam transcript, ~30 saniyede bir `[dk:sn]` damgasıyla. Konuşmaya dayalı derslerde asıl bilgi burada. Whisper'ın bozduğu ve YouTube altyazısıyla doldurulan paragraflar `[yt]` ile işaretlidir. |
+| `transcript_raw.vtt` | Ham YouTube altyazısı (videonun **orijinal dilinde**; YouTube'un otomatik dublaj altyazıları seçilmez) |
+| `transcript_raw.srt` + `transcript_raw_youtube.vtt` | `--whisper` kullanıldığında: Whisper çıktısı + yedek YouTube altyazısı |
 | `metadata.json` | Başlık, kanal, süre, transcript kaynağı, her karenin zamanı ve neden seçildiği |
 
 Wiki dosyaları (`docs/wiki/`):
@@ -250,6 +251,7 @@ Wiki dosyaları (`docs/wiki/`):
 |------|--------|
 | `Index.md` | Ana harita: tüm konu sayfalarının listesi |
 | `Videos.md` | İşlenmiş videoların kayıt defteri (hangi videodan hangi sayfalar çıktı) |
+| `Playbook.md` | **Tüm işlem kurallarının tek, ölçülebilir listesi** (ID'li, kaynak video + dakika, güven seviyesi) + açık sorular + çelişkiler. İleride analiz/backtest sistemi bu dosyayı okuyacak. |
 | `<Konu>.md` | Konu sayfaları. Her birinin başında **Özet, Teknolojiler, Bağlantılar, Kaynak Video** alanları var. Trading konularında ayrıca **"Bot / Uygulama İçin Çıkarılabilir Kurallar"** ve **"Açık sorular"** bölümleri bulunur. |
 
 ---
@@ -320,13 +322,15 @@ Wiki dosyaları (`docs/wiki/`):
 4. ~60 saniyeden uzun boşluklar, transcript'teki "ekranda", "grafikte", "çiziyorum" gibi ipuçlarıyla, yoksa eşit aralıklarla doldurulur.
 5. Kare bütçesi aşılırsa, videoyu eşit kapsayacak ve önemli kareleri koruyacak şekilde azaltılır.
 6. Tamamen siyah/boş kareler elenir.
+7. İndirilen video dosyasının tam olduğu doğrulanır (YouTube bazen yarım dosya veriyor); bozuksa başka yöntemle tekrar indirilir. Hiç kare çıkarılamazsa işlem hata vererek durur.
 
 Bu yöntem dilden bağımsızdır. Eski yöntem (`--frames transcript`) İngilizce anahtar kelimelere dayandığı için Türkçe videolarda neredeyse hiç kare bulamıyordu.
 
 ### Transcript
 
 - Önce YouTube altyazısı (orijinal dil) indirilir.
-- `--whisper` verilirse ses düşük bit hızında (mono, 16 kHz, 32 kbps; ~1.5 saate kadar Groq'un 25 MB sınırına sığar) indirilip Groq Whisper'a gönderilir. `data/glossary_trading_tr.json` içindeki terim listesi Whisper'a ipucu olarak verilir.
+- `--whisper` verilirse **orijinal ses kanalı** (dublaj değil) düşük bit hızında indirilir, **10 dakikalık parçalara** bölünüp Groq Whisper'a gönderilir. `data/glossary_trading_tr.json` içindeki `whisper_prompt` (kısa, doğal bir cümle) ipucu olarak verilir. Uzun terim listesi Whisper'ı bozduğu için kullanılmaz.
+- **Otomatik onarım:** Whisper'ın tekrar döngüsüne girdiği ("BASE BASE BASE…"), sessizce atladığı, Türkçe harflerde kelimeleri kestiği ("Burası" → "Buras") veya İngilizceye çevirdiği bölümler tespit edilir ve aynı dildeki YouTube altyazısıyla doldurulur. Test edilen derslerde Whisper çıktısının %15–25'i bu şekilde onarıldı.
 - Whisper başarısız olursa YouTube altyazısına geri dönülür. İki dosya da saklanır.
 
 ### Altyazı hata sözlüğü

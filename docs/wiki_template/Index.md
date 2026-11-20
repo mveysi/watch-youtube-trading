@@ -7,5 +7,8 @@ Bu dosya ana haritadır — her zaman buradan başla.
 - [[MarketStructure]] — Market yapısı: trend türleri, BOS/MSB
 -->
 
+## Kurallar
+- [[Playbook]] — Öğrenilen tüm işlem kurallarının tek, ölçülebilir listesi + açık sorular + çelişkiler
+
 ## Video Notes
 - [[Videos]] — Analiz edilmiş tüm videoların kayıt defteri

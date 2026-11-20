@@ -1,6 +1,6 @@
 {
   "description": "Trading terimleri sözlüğü. 'whisper_prompt' Groq Whisper'a kelime ipucu olarak gönderilir. 'asr_corrections' YouTube Türkçe otomatik altyazısının İngilizce terimleri nasıl bozduğunu listeler — OTOMATİK UYGULANMAZ (ör. 'hayır' gerçekten 'hayır' da olabilir); wiki yazılırken bağlam + ekran görüntüsüyle teyit edilerek kullanılır. Yeni videolarda yeni hatalar görüldükçe buraya eklenir.",
-  "whisper_prompt": "Price Action eğitimi. Terimler: Price Action, trend, boğa trendi, ayı trendi, yatay trend, Higher High (HH), Higher Low (HL), Lower High (LH), Lower Low (LL), swing high, swing low, equal high, equal low, Break of Structure (BOS), Market Structure Break (MSB), Change of Character (CHoCH), Higher Timeframe (HTF), Lower Timeframe (LTF), impuls, düzeltme, correction, destek, direnç, mum, fitil, long, short, stop loss, take profit, risk reward ratio, Smart Money, order block, mitigation, likidite, fake breakout, akümülasyon, dağıtım, Bitcoin, Forex, parite, Supply, Demand, supply zone, demand zone, Rally, Base, Drop, konsolidasyon, manipülasyon, imbalance, Fair Value Gap, Optimal Trade Entry, Fibonacci, Equilibrium, entry.",
+  "whisper_prompt": "Merhaba, Price Action derslerine devam ediyoruz. Smart Money, Break of Structure, Market Structure Break, supply ve demand bölgeleri, order block, imbalance ve likidite gibi kavramları anlatıyoruz.",
   "asr_corrections": [
     {
       "heard": [
@@ -294,7 +294,78 @@
         "Stok"
       ],
       "means": "stop (stop loss)"
+    },
+    {
+      "heard": [
+        "Beğiriş",
+        "Bureash",
+        "Bearish Blow"
+      ],
+      "means": "Bearish"
+    },
+    {
+      "heard": [
+        "Bulış",
+        "Bullish Blow"
+      ],
+      "means": "Bullish"
+    },
+    {
+      "heard": [
+        "Blow",
+        "blo"
+      ],
+      "means": "Block"
+    },
+    {
+      "heard": [
+        "mutigasyon",
+        "nitigasyon",
+        "Mitige"
+      ],
+      "means": "mitigasyon / mitigation"
+    },
+    {
+      "heard": [
+        "BOA"
+      ],
+      "means": "Boğa"
+    },
+    {
+      "heard": [
+        "renç",
+        "rencin"
+      ],
+      "means": "range"
+    },
+    {
+      "heard": [
+        "vik"
+      ],
+      "means": "wick (fitil)"
+    },
+    {
+      "heard": [
+        "Alt Low",
+        "Alt High",
+        "old lov"
+      ],
+      "means": "Old Low / Old High"
+    },
+    {
+      "heard": [
+        "lower type frame"
+      ],
+      "means": "lower timeframe"
+    },
+    {
+      "heard": [
+        "Ligiditesi",
+        "Ligi de"
+      ],
+      "means": "likiditesi / likidite"
     }
   ],
-  "whisper_known_issues": "Whisper (whisper-large-v3-turbo) uzun seste tekrar döngülerine girebilir ('BASE BASE BASE...') ve bazı bölümleri boş bırakabilir; YouTube altyazısıyla karşılaştırarak tamamla."
+  "whisper_known_issues": "Whisper uzun seste tekrar döngüsüne girebilir ve 30 sn'lik bölümleri sessizce atlayabilir. Pipeline sesi 10 dk'lık parçalara böler ve bozuk/boş bölümleri otomatik olarak YouTube altyazısıyla doldurur ([yt] işaretli paragraflar).",
+  "whisper_prompt_note": "ÖNEMLİ: whisper_prompt KISA (en fazla ~250 karakter) ve DOĞAL BİR CÜMLE olmalı — konuşmanın önceki kısmı gibi. Uzun terim listesi Whisper'ı bozar (test: 728 karakterlik liste ile 10 dakikadan sadece 277 anlamsız kelime çıktı). Seri yeni bir konuya geçince (ör. order block, likidite) cümledeki terimler o konuya göre güncellenebilir."
 }

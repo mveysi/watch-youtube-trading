@@ -217,6 +217,13 @@ def cli(
             fmt=frame_format,
         )
         log.info(f"          Extracted {len(frames)} frames successfully")
+        if timestamps and not frames:
+            # Never report success with no images — the Vision analysis would silently
+            # fall back to transcript-only.
+            raise EnvironmentError(
+                f"No frames could be extracted from the video ({len(timestamps)} attempted). "
+                f"The downloaded video file is probably broken; rerun with --keep-temp to inspect it."
+            )
 
         log.info("Step 5/5 ▸ Compiling storyboard grids...")
         for old in video_output_dir.glob("storyboard_*.jpg"):
@@ -265,9 +272,17 @@ def _load_whisper_prompt(glossary: Path | None) -> str | None:
 def _save_transcript(result, out_dir: Path) -> list[Path]:
     """Persist the raw subtitle file and a readable, timestamped transcript.txt."""
     saved: list[Path] = []
+    for old in out_dir.glob("transcript_raw*"):   # no stale file from an earlier run
+        old.unlink()
+    # Whisper output → transcript_raw.srt ; YouTube subtitle → always transcript_raw.vtt/.srt
+    raws: list[tuple[Path, str]] = []
     if result.transcript_path and Path(result.transcript_path).exists():
-        src = Path(result.transcript_path)
-        dst = out_dir / f"transcript_raw{src.suffix}"
+        raws.append((Path(result.transcript_path), "transcript_raw"))
+    yt = result.youtube_transcript_path
+    if yt and Path(yt).exists() and yt != result.transcript_path:
+        raws.append((Path(yt), "transcript_raw_youtube"))
+    for src, stem in raws:
+        dst = out_dir / f"{stem}{src.suffix}"
         shutil.copyfile(src, dst)
         saved.append(dst)
 
@@ -275,19 +290,32 @@ def _save_transcript(result, out_dir: Path) -> list[Path]:
         lines = [
             f"# {result.title or result.video_id}",
             f"# Kaynak: {result.transcript_source}  |  Kanal: {result.channel}",
-            "",
         ]
+        if result.whisper_repaired:
+            lines.append(
+                f"# Not: Whisper'ın döngüye girdiği/boş bıraktığı {result.whisper_repaired} bölüm "
+                f"YouTube altyazısıyla dolduruldu; bu paragraflar [yt] ile işaretli (terimler daha az güvenilir)."
+            )
+        lines.append("")
         buf: list[str] = []
         t0 = 0.0
+        has_yt = False
+
+        def flush() -> None:
+            tag = " [yt]" if has_yt else ""
+            lines.append(f"[{_mmss(t0)}]{tag} " + " ".join(buf))
+
         for e in result.transcript_entries:
             if not buf:
                 t0 = e.start_sec
+                has_yt = False
             buf.append(e.text)
+            has_yt = has_yt or e.source == "yt"
             if e.end_sec - t0 >= 30:
-                lines.append(f"[{_mmss(t0)}] " + " ".join(buf))
+                flush()
                 buf = []
         if buf:
-            lines.append(f"[{_mmss(t0)}] " + " ".join(buf))
+            flush()
         txt = out_dir / "transcript.txt"
         txt.write_text("\n".join(lines) + "\n", encoding="utf-8")
         saved.append(txt)
@@ -303,6 +331,7 @@ def _save_metadata(url, result, duration, frame_mode, timestamps, frames, boards
         "channel": result.channel,
         "duration_sec": duration,
         "transcript_source": result.transcript_source,
+        "whisper_repaired_segments": result.whisper_repaired,
         "analyzed_at": date.today().isoformat(),
         "frame_mode": frame_mode,
         "frames": [

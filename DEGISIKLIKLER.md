@@ -45,3 +45,18 @@ Bu sorunların hepsi giderildi ve 4 farklı video (konuşan kafa, slayt, grafik)
 - `README.md` yeni başlayanlar için baştan yazıldı (Windows + macOS/Linux kurulumu, Groq, kullanım, sorun giderme).
 - `docs/wiki_template/`: boş başlangıç wiki'si; `docs/wiki/` GitHub'a yüklenmediği için ilk kullanımda Claude bunu kopyalar.
 - `.gitignore`: `tools/` (ffmpeg) ve `*.egg-info/` eklendi; `.gitattributes` ile satır sonları LF'ye sabitlendi.
+
+## Ek 2: Eğitim fazı hazırlığı (2026-11-20)
+
+6 video üzerinde test edilerek eklendi:
+
+| Değişiklik | Neden |
+|-----------|-------|
+| **Whisper parçalama** (10 dk) + `transcript_repair.py` | Tek parça seste Whisper ~%25 konuşmayı sessizce atlıyor, döngüye giriyordu. Ayrıca Türkçe harflerde kelimeleri kesiyor ("Buras", "ger") veya İngilizceye çeviriyordu. Bozuk bölümler tespit edilip aynı dildeki YouTube altyazısıyla doldurulur (`[yt]`). |
+| **Whisper ipucu kısa doğal cümle** | 728 karakterlik terim listesi Whisper'ı tamamen bozdu (10 dk'dan 277 anlamsız kelime). Kodda 250 karakter sınırı + uyarı. |
+| **Orijinal dil seçimi** (altyazı + ses) | YouTube'un otomatik dublajlı videolarında `en-US-orig` dublaj altyazısı `tr-orig` yerine seçiliyordu. Artık videonun orijinal dili meta veriden okunuyor. |
+| **Video indirme doğrulaması** | `android` istemcisi bir derste 23 dakikalık video için 583 KB'lık yarım dosya verdi (0 kare). Önce varsayılan istemci, sonra yedek; dosya sonundan kare okunarak doğrulanıyor. H.264 tercih ediliyor (AV1 sahne tespitinde çok yavaş). |
+| **Sıfır kare = hata** | Önceden kare çıkarılamazsa program "başarılı" diyordu. |
+| **Playbook** (`docs/wiki_template/Playbook.md`, `docs/playbook_ornek.md`) + SKILL.md adımları | Kuralların ID'li, kaynaklı, ölçülebilir tek listesi; açık sorular ve çelişkiler tablosu; her videodan sonra Kalite Raporu. |
+| Gemini incelemesinden 5 düzeltme | Orijinal dil altyazı önceliği, VTT tekrar filtresi, Türkçe ek eşleşmesi, satır kaydırma hatası, sahne tespiti 640px. |
+

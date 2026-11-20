@@ -9,6 +9,7 @@ class TranscriptEntry:
     start_sec: float
     end_sec: float
     text: str
+    source: str = ""   # "" = primary transcript; "yt" = filled in from YouTube subtitles
 
 
 @dataclass
@@ -35,6 +36,8 @@ class DownloadResult:
     temp_dir: Path
     video_id: str = ""
     transcript_path: Path | None = None
+    youtube_transcript_path: Path | None = None   # always kept, even when Whisper is used
+    whisper_repaired: int = 0                     # broken Whisper ranges replaced
     title: str = ""
     channel: str = ""
     duration: float | None = None

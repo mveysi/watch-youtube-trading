@@ -9,18 +9,20 @@ Turns a YouTube video into annotated JPEG storyboard grids + a saved transcript,
 
 ## When the user invokes this skill
 
-0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying `docs/wiki_template/Index.md` and `docs/wiki_template/Videos.md` into it.
+0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying everything in `docs/wiki_template/` (`Index.md`, `Videos.md`, `Playbook.md`) into it.
 1. Extract the video ID and check `docs/wiki/Videos.md` — if already analyzed, answer from the wiki instead.
-2. Run the pipeline (see **Running the pipeline**). Playlist URLs (`&list=...`) are fine — only the single video is fetched.
+2. Run the pipeline (see **Running the pipeline**). Playlist URLs (`&list=...`) are fine — only the single video is fetched. **If `GROQ_API_KEY` is set, always use `--whisper -l <lang>`** (Turkish videos: `-l tr`).
 3. Read **both** sources from `output/<video_id>/`:
    - `storyboard_page_*.jpg` — what was on screen (slides, charts, labels)
-   - `transcript.txt` — what was said (timestamped, 30s paragraphs). For talk-heavy videos this is the primary source; read all of it.
-   - `metadata.json` — title, channel, duration, which frame came from where
+   - `transcript.txt` — what was said (timestamped, 30s paragraphs). For talk-heavy videos this is the primary source; read all of it. Paragraphs tagged `[yt]` were filled from YouTube subtitles because Whisper failed there — jargon in them is less reliable.
+   - `metadata.json` — title, channel, duration, which frame came from where, `whisper_repaired_segments`
 4. Correct transcript recognition errors (see **Transcript quality**).
 5. Show the user a structured analysis.
 6. Write knowledge pages to `docs/wiki/` (see **Writing to docs/wiki**).
-7. Add the video record to `docs/wiki/Videos.md`, update `docs/wiki/Index.md`, and update any series tracker page.
-8. Report anything the pipeline likely missed (see **Coverage check**).
+7. **Update `docs/wiki/Playbook.md`** (see **Playbook**): add/update rules, close answered open questions, open new ones, record contradictions.
+8. Add the video record to `docs/wiki/Videos.md`, update `docs/wiki/Index.md`, and update any series tracker page.
+9. Report anything the pipeline likely missed (see **Coverage check**).
+10. **End with the Quality Report** (see **Quality Report**) — always, as the last thing in your reply.
 
 ---
 
@@ -87,7 +89,8 @@ GROQ_API_KEY="gsk_..." .venv/Scripts/watch-youtube.exe "<URL>" -o ./output --whi
 |------|---------|
 | `storyboard_page_NNN.jpg` | 3×3 grids, timestamp badge + spoken caption under each frame |
 | `transcript.txt` | Full readable transcript, `[mm:ss]` every ~30s |
-| `transcript_raw.vtt` / `.srt` | Original subtitle file (YouTube or Whisper) |
+| `transcript_raw.vtt` | YouTube subtitle in the video's original spoken language (AI-dub captions are skipped) |
+| `transcript_raw.srt` + `transcript_raw_youtube.vtt` | With `--whisper`: Whisper output + the YouTube fallback |
 | `metadata.json` | URL, title, channel, duration, transcript source, every frame's time + selection reason |
 
 ---
@@ -165,10 +168,42 @@ Follow `.claude/skills/wiki-schema/SKILL.md`. Every page starts with:
 
 Because this wiki feeds a later analysis/trading system, trading pages also include:
 
-- **"Bot / Uygulama İçin Çıkarılabilir Kurallar"** — the video's rules restated as precise, testable conditions (pseudo-code welcome). Label clearly which parts are the instructor's explicit rules vs. your derivation.
-- **"Açık sorular"** — ambiguities a programmer would hit (close vs. wick? swing detection rule? tolerances?) to be answered by later lessons.
+- **"Bot / Uygulama İçin Çıkarılabilir Kurallar"** — short pseudo-code view of the topic's rules, each line pointing to its Playbook ID (→ SD-003). The Playbook is the authoritative wording.
+- **"Açık sorular"** — list the Playbook question IDs relevant to this topic (Q-002, Q-011) with one line each; the full table lives in the Playbook.
 - New terms go into `[[TradingTerminology]]`.
 - Series videos: update the series tracker page (e.g. `[[PriceActionCourseRoadmap]]`) — mark the lesson done, add announced upcoming topics.
+
+---
+
+## Playbook
+
+`docs/wiki/Playbook.md` is the single, authoritative list of **codeable trading rules** learned so far. Topic pages explain; the Playbook decides. A later analysis/backtest system will read only this file. Format and ID scheme are documented at the top of the Playbook itself; a worked example is in `docs/playbook_ornek.md`.
+
+For every video:
+1. **Rules:** add each rule the video teaches as `### <PREFIX>-<NNN>: <title>` with Kural / Parametreler / Kaynak (video + mm:ss range) / Güven / Durum / İlgili. Update existing rules instead of duplicating them (append the new source).
+2. **Measurable or nothing:** a rule must be codeable without guessing ("gövde kapanışı önceki swing high üzerinde", not "güçlü kırılım"). If the instructor gives no number/threshold, **do not invent one** — leave the parameter as `?` and open a question.
+3. **Güven:** `açık kural` only if the instructor explicitly states/shows it (cite the minute). Your own formalisation of a looser explanation is `türetilmiş`.
+4. **Open questions:** close those this video answers (status `cevaplandı`, video ID, the answer with minute). Add new ones with the next free `Q-NNN`.
+5. **Contradictions:** if this video conflicts with an existing rule, do **not** silently overwrite — add a row to *Çelişkiler*, mark the rule `çelişkili`, and ask the user which applies.
+6. In topic pages, the "Bot / Uygulama İçin Çıkarılabilir Kurallar" section should reference Playbook IDs (e.g. "→ MS-004") rather than restating rules differently.
+
+---
+
+## Quality Report
+
+Finish every processed video with this block (Turkish, concise). It is what the user reviews instead of reading every page:
+
+```
+📋 Kalite Raporu: <video başlığı>
+- Transcript: whisper | vtt · YouTube'dan doldurulan bölüm: N · kaçmış olabilecek görsel: yok / <dk + açıklama>
+- Yeni kurallar: SD-004 (açık kural), IMB-002 (türetilmiş) …
+- Güncellenen kurallar: MS-003 (kırılım tipi netleşti) …
+- Kapanan sorular: Q-002 → "gövde kapanışı gerekir" (12:40) …
+- Yeni açık sorular: Q-011 (base en az kaç mum?) …
+- Çelişkiler: yok / <kısa açıklama — kullanıcı kararı bekleniyor>
+- Hâlâ belirsiz ifadeler: "hacimli mum" (ölçü yok) …
+- Sözlüğe eklenen altyazı hataları: N
+```
 
 ---
 

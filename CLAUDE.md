@@ -8,11 +8,11 @@ Kullanıcı bir konu veya video hakkında soru sorduğunda şu sırayı takip et
 
 ### 0. İlk kullanım
 
-`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki `Index.md` ile `Videos.md` dosyalarını oraya kopyala.
+`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki dosyaları (`Index.md`, `Videos.md`, `Playbook.md`) oraya kopyala.
 
 ### 1. Önce wiki'yi kontrol et
 
-`docs/wiki/Index.md` dosyasını oku. İlgili konu orada varsa:
+`docs/wiki/Index.md` dosyasını oku. Soru bir **işlem kuralı** hakkındaysa (giriş, stop, kırılım, bölge geçerliliği…) önce `docs/wiki/Playbook.md` dosyasına bak; oradaki ID'li kural ve açık sorular esas alınır. İlgili konu orada varsa:
 - Doğrudan ilgili wiki sayfasını oku
 - Cevabı wiki içeriğinden ver
 - Cevabın sonuna hangi wiki sayfasından geldiğini ve kaynağı olan videoyu belirt
@@ -87,7 +87,7 @@ source .venv/bin/activate
 watch-youtube "<URL>" -o ./output -v
 ```
 
-Çıktılar `output/<video_id>/` altında: `storyboard_page_*.jpg`, `transcript.txt`, `transcript_raw.vtt`, `metadata.json`. Wiki yazarken storyboard'larla birlikte `transcript.txt` dosyasını da oku. Türkçe altyazı hataları için `data/glossary_trading_tr.json` dosyasına bak. Tüm seçenekler için `.claude/skills/watch-youtube/SKILL.md` dosyasına bak.
+Çıktılar `output/<video_id>/` altında: `storyboard_page_*.jpg`, `transcript.txt` (`[yt]` = YouTube altyazısıyla onarılmış paragraf), `transcript_raw.vtt` veya Whisper ile `transcript_raw.srt` + `transcript_raw_youtube.vtt`, `metadata.json`. Groq anahtarı varsa her zaman `--whisper -l tr` kullan. Wiki yazarken storyboard'larla birlikte `transcript.txt` dosyasını da oku. Türkçe altyazı hataları için `data/glossary_trading_tr.json` dosyasına bak. Tüm seçenekler için `.claude/skills/watch-youtube/SKILL.md` dosyasına bak.
 
 ## Bağımlılıklar
 

@@ -14,10 +14,7 @@ Neden: Claude'un grafik ekran görüntüsüne bakıp "göz kararı" yorum yapmas
 
 ## 2. Sınırlar (kesin)
 
-- **Gerçek emir yok.** Bu aşamada borsaya emir gönderen hiçbir kod yazılmaz. İşlem yetkili API anahtarı kullanılmaz; sadece halka açık (anahtarsız) piyasa verisi okunur.
-- **Aşama 1'e dokunulmaz.** `watch_youtube/`, `.claude/skills/`, `docs/wiki_template/`, kök `README.md`/`CLAUDE.md` değiştirilmez. Aşama 2'nin tüm kodu, testi ve çıktısı `asama2_kripto_analiz/` içinde kalır. Aşama 1'den tek alınan şey `docs/wiki/Playbook.md` (sadece **okunur**).
-- **Ayrı dal.** Çalışma `asama-2` git dalında yapılır. `main`'e birleştirme kullanıcının onayıyla olur.
-- **Henüz öğretilmemiş kural kodlanmaz.** Playbook'ta olmayan bir konu (ör. order block sınırları) "tahminle" eklenmez. Motor, Playbook büyüdükçe büyür.
+Değişmeyen sınırlar **[ANAYASA.md](ANAYASA.md)** dosyasındadır (§A): gerçek emir yok, Aşama 1'e dokunmak yok, çalışma `asama-2` dalında, Playbook'ta olmayan kural yok. O dosya bu plandan üstündür; plan güncellenirken değiştirilemez.
 
 ## 3. Önemli: Kural ID'leri senin Playbook'una göre
 
@@ -36,7 +33,11 @@ Bu plan `asama2-plan` dalından tek başına da indirilebilir. Okumak için yete
 ```
 asama2_kripto_analiz/
 ├── PLAN.md                 # bu dosya
+├── ANAYASA.md              # değiştirilemez çekirdek: sınırlar + güven protokolü
 ├── CLAUDE.md               # Claude için çalışma kuralları (bu klasöre özel)
+├── DEVAM.md                # devam notu: compact/yeni oturum sonrası otomatik okunur
+├── koruma_kontrol.py       # otomatik koruma kontrolü (GitHub'da her push'ta çalışır)
+├── kurulum/                # Claude Code izin ayarı örneği
 ├── README.md               # kısa tanıtım + nasıl çalıştırılır
 ├── requirements.txt        # Aşama 2'nin kendi bağımlılıkları (Aşama 1'den bağımsız)
 ├── beklenen/               # kod yazılmadan ÖNCE dondurulan doğru cevaplar (kabul testi)
@@ -56,15 +57,9 @@ asama2_kripto_analiz/
 
 ## 5. Güven protokolü (her adımda geçerli)
 
-Testi yazan ile sonucu "geçti" diyen aynı Claude olursa sonuca güvenilmez. Bu yüzden:
+Kuralları **[ANAYASA.md](ANAYASA.md)** §B'dedir: doğru cevaplar koddan önce dondurulur (dondurma = onaylanmış `beklenen/` dosyasının `main`'e alınması), her kabul testi görsel kanıt üretir, uyuşmazlık saklanmaz, ezber ayar yapılmaz, sonuç başka bilgisayarda tekrar edilebilir.
 
-1. **Doğru cevap koddan önce yazılır ve dondurulur.** `beklenen/` altındaki dosyalar eğitmenin kendi işaretlemelerinden çıkarılır, kullanıcı onaylar, **ayrı bir commit** olarak kaydedilir. Kod yazıldıktan sonra bu dosyalar **değiştirilmez** (değişmesi gerekirse kullanıcıya sorulur ve nedeni commit mesajına yazılır).
-2. **Görsel kanıt.** Motor her kabul testinde etiketli bir grafik resmi üretir. Kullanıcı bunu eğitmenin ekran görüntüsüyle (Aşama 1'in `output/<video_id>/storyboard_page_*.jpg` dosyaları) **yan yana** karşılaştırır.
-3. **Uyuşmazlık saklanmaz.** Rapor her beklenen nokta için "tuttu / tutmadı / kısmen" yazar; tutmayanların nedenini açıklar. "Tamamen geçti" ancak hepsi tuttuysa denir.
-4. **Ezber yasak.** Ayarlar tek bir grafiğe göre aşırı ayarlanmaz: ayarlar BTC örneğinde seçildiyse, başka bir örnekte (eğitmenin Forex örneği veya sonraki derslerdeki grafikler) de denenir ve sonuç ayrıca raporlanır.
-5. **Bağımsız tekrar.** Aynı komut başka bir bilgisayarda (ör. planı hazırlayan kullanıcı tarafında, Yahoo verisiyle) çalıştırıldığında aynı olaylar çıkmalıdır.
-
----
+**Otomatik koruma:** her push'ta GitHub'da `asama2-koruma` kontrolü çalışır (`koruma_kontrol.py`). Klasör dışı değişiklik, ANAYASA veya dondurulmuş beklenen dosyası değişirse kırmızı ✖ verir. Yerelde de çalıştırılabilir: `python asama2_kripto_analiz/koruma_kontrol.py`.
 
 ## 6. Adımlar
 
@@ -74,7 +69,7 @@ Her adımın bir **kabul kriteri** var. Kriter sağlanmadan sonraki adıma geçi
 
 - 2. dersin (`oQhdnKzsGyw`, "Market Yapısını Anlamak") 26:21–32:45 bölümünde eğitmen günlük BTC grafiğinde (2021 – Mart 2022) trendi çiziyor ve dönüş noktalarını etiketliyor. Kareler: `output/oQhdnKzsGyw/storyboard_page_004.jpg` ve `005.jpg` (yaklaşık 1640–1954 sn). Transcript: `output/oQhdnKzsGyw/transcript.txt`.
 - `beklenen/btc_1d_2021_2022.md` dosyasında **aday** bir liste hazır (planı hazırlayanın storyboard + transcript + Yahoo verisinden çıkardığı tahminler). Bunları storyboard karelerine ve gerçek mum verisine bakarak **doğrula**, tarihleri düzelt, belirsizleri "belirsiz" diye işaretle.
-- **Kabul:** kullanıcı listeyi onaylar → dosyanın başındaki durum `ONAYLANDI (tarih)` olur → ayrı commit.
+- **Kabul:** kullanıcı listeyi onaylar → dosyanın başındaki durum `ONAYLANDI (tarih)` olur → ayrı commit → proje sahibi bu dosyayı **`main`'e alır** (dondurma). Bundan sonra `asama-2` dalında değiştirilirse otomatik kontrol kırmızı verir.
 - **Olmazsa:** storyboard'da etiket okunamıyorsa video tekrar işlenebilir (`watch-youtube <URL> -o ./output -n 60 --keep-temp`) veya o dakikadan tek kare alınabilir (`ffmpeg -ss 1700 -i video.mp4 -frames:v 1 kare.jpg`).
 
 ### Adım 1: Veri katmanı (`data.py`)
@@ -155,7 +150,23 @@ Sıra, Aşama 1'de ilgili dersler işlenip açık sorular kapandıkça belirleni
 - Claude'un motor çıktısını okuyup yorum yaptığı bir analiz skill'i
 - Gerçek emir: ancak backtest ve kâğıt işlem sonuçları ikna edici olursa, ayrıca konuşularak
 
-## 8. Takılırsan
+## 8. Planı güncelleme (plan bir tahmindir)
+
+Bu plan, kod yazılmadan önce yapılmış bir tahmindir; uygulamada farklı çıkabilir. Uygulayan Claude planı **güncelleyebilir**, şu kurallarla:
+
+- **Serbest (kullanıcıya bildirerek):** yöntem, kütüphane, dosya/klasör adları, adımların iç sırası, "Olmazsa" listesine yeni alternatif eklemek, bir adımı alt adımlara bölmek.
+- **Kullanıcı onayıyla:** adım eklemek/çıkarmak, kapsamı değiştirmek (ör. bir konuyu sonraya bırakmak), bir kabul kriterini değiştirmek (sadece **sıkılaştırmak** veya netleştirmek; gevşetmek için güçlü gerekçe + açık onay).
+- **Yasak:** [ANAYASA.md](ANAYASA.md) §C'deki her şey (dondurulmuş cevapları uydurmak, sınırları kaldırmak, koruma düzeneğini değiştirmek…). ANAYASA.md bu planla çelişirse ANAYASA geçerlidir.
+- Her değişiklik aşağıdaki **Plan Değişiklik Günlüğü**ne bir satır olarak yazılır (tarih · ne değişti · neden · onay). Eski metin silinmez, üstü çizilir (`~~eski~~ → yeni`) ki neyin neden değiştiği görülsün.
+
+### Plan Değişiklik Günlüğü
+
+| Tarih | Değişiklik | Neden | Onay |
+|------|-----------|-------|------|
+| 2026-11-20 | Plan oluşturuldu | — | kullanıcı |
+| 2026-11-20 | §8 "Planı güncelleme" + bu günlük eklendi; sınırlar ve güven protokolü değiştirilemez ANAYASA.md'ye taşındı; koruma düzeneği (koruma_kontrol.py, GitHub kontrolü, izin ayarı örneği) ve DEVAM.md eklendi; dondurma = beklenen dosyasının main'e alınması | Diğer Claude'un önemli bir şeyi sessizce değiştirmesini önlemek; compact sonrası bağlam kaybını önlemek | kullanıcı |
+
+## 9. Takılırsan
 
 - Playbook'ta bir kural koda dökülemeyecek kadar belirsizse: kodlama, `?` olarak bırak, kullanıcıya sor (gerekirse Aşama 1'de açık soru olarak kayıtlı mı kontrol et).
 - Bir yöntem iki denemede de kabul kriterini sağlamıyorsa: "Olmazsa" satırına geç; o da olmazsa ne denendiğini ve sonuçlarını yazıp kullanıcıya sor. Kabul kriterini gevşetme.

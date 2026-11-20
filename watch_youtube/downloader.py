@@ -273,6 +273,8 @@ def _download_video_file(url: str, output_dir: Path) -> tuple[Path, dict]:
     """Download an MP4 for frame extraction and verify it is complete; return (path, info)."""
     last_problem = ""
     for client in _VIDEO_CLIENTS:
+        if client and "android" in client and _AUTH_OPTS:
+            continue  # android does not support cookies — pointless when authenticating
         for stale in output_dir.glob("*_video*"):
             stale.unlink(missing_ok=True)
         opts = {

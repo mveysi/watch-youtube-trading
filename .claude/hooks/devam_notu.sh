@@ -13,7 +13,7 @@ cd "$kok" 2>/dev/null || exit 0
 goster() {  # $1 = dosya, $2 = başlık
   [ -f "$1" ] || return 0
   printf '\n===== %s (%s) =====\n' "$2" "$1"
-  head -c 6000 "$1"
+  head -n 100 "$1"
   printf '\n'
 }
 
@@ -22,7 +22,7 @@ goster "docs/wiki/DEVAM.md" "Aşama 1 devam notu"
 goster "asama2_kripto_analiz/DEVAM.md" "Aşama 2 devam notu"
 if [ -f "OTURUM_NOTLARI.md" ]; then
   printf '\n===== Proje sahibi notu: DEVAM NOKTASI (OTURUM_NOTLARI.md) =====\n'
-  sed -n '/DEVAM NOKTASI/,/^## 1\./p' OTURUM_NOTLARI.md | head -c 6000
+  sed -n '/DEVAM NOKTASI/,/^## 1\./p' OTURUM_NOTLARI.md | head -n 100
   printf '\n'
 fi
 exit 0

@@ -14,6 +14,7 @@ Sadece Python standart kütüphanesi kullanır.
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 
@@ -23,7 +24,13 @@ HEP_KORUNAN = {
     KLASOR + "koruma_kontrol.py",
 }
 BEKLENEN = KLASOR + "beklenen/"
-DONDURMA_ISARETI = "ONAYLANDI"
+# Sadece dosyanın durum satırına bakılır (açıklama metninde geçen "ONAYLANDI" sayılmaz).
+# Dondurulmuş dosyada durum satırı şöyle olmalı:  > **Durum: ONAYLANDI (2026-12-01)** …
+DONDURMA_RE = re.compile(r"^>\s*\*\*Durum:\s*ONAYLANDI\b", re.MULTILINE)
+
+
+def donduruldu_mu(metin: str) -> bool:
+    return bool(DONDURMA_RE.search(metin))
 
 
 def git(*args: str) -> str:
@@ -55,7 +62,7 @@ def kontrol(base: str) -> list[str]:
             hatalar.append(f"Korunan dosya değişmiş: {yol}  (ANAYASA §D)")
         elif yol.startswith(BEKLENEN):
             main_surumu = dosya_main_de(base, yol)
-            if main_surumu is not None and DONDURMA_ISARETI in main_surumu:
+            if main_surumu is not None and donduruldu_mu(main_surumu):
                 hatalar.append(f"Dondurulmuş beklenen dosyası değişmiş: {yol}  (ANAYASA §B.1)")
     return hatalar
 

@@ -53,7 +53,7 @@ Planı uygulamak için Aşama 1'in çıktılarına da erişim gerekir (bkz. [PLA
 3. **Otomatik kontrol** (`.github/workflows/asama2-koruma.yml`): her push'ta korunan dosya değiştiyse GitHub'da kırmızı ✖.
 4. **İnceleme:** `main`'e birleştirme proje sahibinin onayıyla; proje sahibi kendi Claude'una "asama-2 dalını incele" diyerek değişikliklerin özetini alır.
 
-Not: 2. katman Claude'un dosya düzenleme araçlarını engeller; kabuk komutlarıyla yapılan değişiklikleri 3. katman yakalar. Hiçbir katman tek başına mutlak değildir; birlikte sessiz değişikliği imkânsıza yakın hale getirirler.
+Not: 2. katman Claude'un dosya düzenleme araçlarını engeller (Claude Code'da `Edit(yol)` kuralı Edit, Write ve NotebookEdit'in hepsini kapsar; ayrıca `Write(yol)` kuralı yazmak gerekmez, yazılsa da dosya izinlerinde dikkate alınmaz). `./` ile başlayan kurallar (kök `CLAUDE.md`, `README.md`…) Claude proje kökünden başlatıldığında geçerlidir; kabuk komutlarıyla yapılan değişiklikleri 3. katman yakalar. Hiçbir katman tek başına mutlak değildir; birlikte sessiz değişikliği imkânsıza yakın hale getirirler.
 
 ## Sınırlar
 

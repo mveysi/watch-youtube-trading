@@ -60,3 +60,20 @@ Bu sorunların hepsi giderildi ve 4 farklı video (konuşan kafa, slayt, grafik)
 | **Playbook** (`docs/wiki_template/Playbook.md`, `docs/playbook_ornek.md`) + SKILL.md adımları | Kuralların ID'li, kaynaklı, ölçülebilir tek listesi; açık sorular ve çelişkiler tablosu; her videodan sonra Kalite Raporu. |
 | Gemini incelemesinden 5 düzeltme | Orijinal dil altyazı önceliği, VTT tekrar filtresi, Türkçe ek eşleşmesi, satır kaydırma hatası, sahne tespiti 640px. |
 
+
+## Ek 3: Bilgi biriktiren sistem (2026-11-20)
+
+Amaç dersleri tek tek özetlemek değil, seri ilerledikçe tek ve tutarlı bir bilgi modeli kurmak (seri 20+ saat ve her ders öncekinin üstüne inşa ediliyor).
+
+| Değişiklik | Neden |
+|-----------|-------|
+| **`playbook-check` komutu** (`watch_youtube/playbook_check.py`) | Playbook'u denetler: çift kural ID'si, eksik/geçersiz alan, tanımsız kural/soru atfı, kırık `[[Videos#ID]]` linki, `?` parametresi olup sorusu olmayan kural. `--write` ile Playbook başındaki **Bilgi Durumu** panosunu (kategori bazında aktif / koda hazır kural, soru durumları, bekleyen çelişki) üretir; `--last-log` öğrenme günlüğünün sadece son kaydını yazar. 20+ saatlik seride sessiz format bozulmasını önler. |
+| **`LearningLog.md`** (şablon) | Her dersin ne kattığı (yeni / inceltilen / kapanan soru / yeni soru / bilgi durumu). Sadece sona eklenir, baştan okunmaz (bağlam yükü olmasın). Videos.md'ye konmadı, çünkü Videos.md her URL sorusunda okunuyor. |
+| **Ders öncesi aktif öğrenme** (SKILL.md) | Claude dersi okumadan önce açık/beklenen soruları ve ilgili kuralları okur; yeni bilgiyi yeni / inceltme / çelişki olarak sınıflandırır. |
+| **`beklenen` soru durumu** | Eğitmen "ileride anlatacağım" derse soru kaydedilir ve o ders gelince kapanır. |
+| **Değişiklik yayılımı** (SKILL.md) | Bir kural değişince İlgili kurallar ve onu kullanan tüm sayfalar/kod taslakları düzeltilir. |
+| **Kavram sayfası formatı** (wiki-schema §6) | Ana metin hep güncel bilgiyi anlatır; değişiklikler sondaki "Tanımın Gelişimi" bölümüne tek satır. Derse özgü içerik (ödevler, ders sonu slaytı) Videos.md kaydına gider. 500 kelime sınırı → güncel içerik ~1000 kelime (gelişim bölümü sayılmaz). |
+| **Playbook kabul filtresi** | Sadece bir programın hesaplama/karar için ihtiyaç duyduğu şeyler kural ID'si alır (tanım, filtre, giriş/stop/hedef, risk); anekdot ve yorumlar konu sayfasında kalır. Kural şişmesini önler. |
+| **Çelişki ilkesi** | Önerilen varsayılan: aynı eğitmenin sonraki, konuya özel dersi; karar yine kullanıcıda. |
+| **ffmpeg otomatik bulma** (`extractor.py`) | PATH'te yoksa proje içindeki `tools/**/ffmpeg(.exe)` aranır (sürüm klasörü adı önemsiz) ve PATH'e eklenir; ffprobe de oradan bulunur. Başka bir bilgisayarda sabit `ffmpeg-9.0.2` yolu yüzünden hata çıkmaz. |
+| **YouTube çerez desteği** (`--cookies`, `--cookies-from-browser`, `./cookies.txt` otomatik) | Çok sayıda indirmeden sonra YouTube IP'yi "bot değilim" doğrulamasıyla engelledi (tüm videolar, tüm istemciler). Çerezler sadece okunur; `cookies*.txt` gitignore'da. |

@@ -9,20 +9,26 @@ Turns a YouTube video into annotated JPEG storyboard grids + a saved transcript,
 
 ## When the user invokes this skill
 
-0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying everything in `docs/wiki_template/` (`Index.md`, `Videos.md`, `Playbook.md`) into it.
+The goal is not to summarise each lesson but to **grow one consistent body of knowledge**: every new lesson adds to, refines or corrects what the wiki already knows (course series build on themselves).
+
+0. If `docs/wiki/` does not exist yet (fresh clone), create it by copying everything in `docs/wiki_template/` (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`) into it. If it exists but a template file is missing (e.g. `LearningLog.md` after an update), copy just that file.
 1. Extract the video ID and check `docs/wiki/Videos.md` — if already analyzed, answer from the wiki instead.
 2. Run the pipeline (see **Running the pipeline**). Playlist URLs (`&list=...`) are fine — only the single video is fetched. **If `GROQ_API_KEY` is set, always use `--whisper -l <lang>`** (Turkish videos: `-l tr`).
-3. Read **both** sources from `output/<video_id>/`:
+3. **Prepare before reading the lesson (active learning)** — see **Before the lesson**: run `playbook-check`, read the open/expected questions and the rules/pages related to this lesson's topic, and write down which questions this lesson might answer.
+4. Read **both** sources from `output/<video_id>/`:
    - `storyboard_page_*.jpg` — what was on screen (slides, charts, labels)
    - `transcript.txt` — what was said (timestamped, 30s paragraphs). For talk-heavy videos this is the primary source; read all of it. Paragraphs tagged `[yt]` were filled from YouTube subtitles because Whisper failed there — jargon in them is less reliable.
    - `metadata.json` — title, channel, duration, which frame came from where, `whisper_repaired_segments`
-4. Correct transcript recognition errors (see **Transcript quality**).
-5. Show the user a structured analysis.
-6. Write knowledge pages to `docs/wiki/` (see **Writing to docs/wiki**).
-7. **Update `docs/wiki/Playbook.md`** (see **Playbook**): add/update rules, close answered open questions, open new ones, record contradictions.
-8. Add the video record to `docs/wiki/Videos.md`, update `docs/wiki/Index.md`, and update any series tracker page.
-9. Report anything the pipeline likely missed (see **Coverage check**).
-10. **End with the Quality Report** (see **Quality Report**) — always, as the last thing in your reply.
+5. Correct transcript recognition errors (see **Transcript quality**).
+6. Show the user a structured analysis.
+7. Update concept pages in `docs/wiki/` (see **Writing to docs/wiki**): current knowledge in the main text, one line per change in *Tanımın Gelişimi*.
+8. **Update `docs/wiki/Playbook.md`** (see **Playbook**): add/refine rules (acceptance filter!), close answered questions, open new ones, record contradictions.
+9. **Propagate changes** (see **Change propagation**): every rule you changed → check its *İlgili* rules and every page that mentions it.
+10. Add the video record to `docs/wiki/Videos.md`, update `docs/wiki/Index.md`, and update any series tracker page.
+11. Run `playbook-check --write`; fix every ✖ error before continuing (warnings: fix if they are real mistakes).
+12. **Append the lesson entry to `docs/wiki/LearningLog.md`** (format in that file) — append only, never rewrite older entries, never read the whole file. Its "Bilgi durumu" line comes from step 11.
+13. Report anything the pipeline likely missed (see **Coverage check**).
+14. **End with the Quality Report** (see **Quality Report**) — always, as the last thing in your reply.
 
 ---
 
@@ -31,8 +37,8 @@ Turns a YouTube video into annotated JPEG storyboard grids + a saved transcript,
 **Windows (this machine)** — run from the project root in Git Bash:
 
 ```bash
-export PATH="$PWD/tools/ffmpeg-9.0.2-essentials_build/bin:$PATH"   # bundled ffmpeg
-export PYTHONIOENCODING=utf-8                                      # Turkish output in the console
+export PYTHONIOENCODING=utf-8   # Turkish output in the console
+# ffmpeg: found automatically on PATH or anywhere under ./tools/ (any version folder)
 .venv/Scripts/pip install -r requirements.txt
 .venv/Scripts/pip install -e .
 .venv/Scripts/python -m spacy download en_core_web_sm
@@ -54,8 +60,9 @@ brew install ffmpeg   # or: sudo apt install ffmpeg
 Windows (Git Bash, project root):
 
 ```bash
-export PATH="$PWD/tools/ffmpeg-9.0.2-essentials_build/bin:$PATH" PYTHONIOENCODING=utf-8
+export PYTHONIOENCODING=utf-8
 .venv/Scripts/watch-youtube.exe "<YOUTUBE_URL>" -o ./output -v
+.venv/Scripts/playbook-check.exe            # knowledge state + format check (add --write after updating the Playbook)
 ```
 
 macOS / Linux: `watch-youtube "<YOUTUBE_URL>" -o ./output -v`
@@ -160,7 +167,7 @@ Follow `.claude/skills/wiki-schema/SKILL.md`. Every page starts with:
 ```
 
 - PascalCase English file names (`MarketStructure.md`, `SmartMoneyConcepts.md`).
-- If a concept page already exists, **extend it** (and append the new video to its `Kaynak Video` line) instead of creating a duplicate.
+- Pages are **concept pages, not lesson summaries**. If a concept page already exists, update it (and append the new video to its `Kaynak Video` line) instead of creating a duplicate. The main text always states the *current* knowledge — rewrite it when a lesson refines or corrects it, and add one line to `## Tanımın Gelişimi` at the bottom (format: wiki-schema §6). Lesson-only material (end-of-lesson slide, homework) goes into the Videos.md record / LearningLog, not into the concept page.
 - Describe diagrams/charts in text (labels, arrows, annotations, what the example shows).
 - Tag sponsor segments: `> [!sponsor] Name`.
 
@@ -180,12 +187,35 @@ Because this wiki feeds a later analysis/trading system, trading pages also incl
 `docs/wiki/Playbook.md` is the single, authoritative list of **codeable trading rules** learned so far. Topic pages explain; the Playbook decides. A later analysis/backtest system will read only this file. Format and ID scheme are documented at the top of the Playbook itself; a worked example is in `docs/playbook_ornek.md`.
 
 For every video:
+0. **Acceptance filter:** a statement gets a rule ID only if a program needs it to **compute something or make a decision**: definitions (how to detect a swing, trend, zone, imbalance…), filters (news window, timeframe alignment), entry/stop/target and risk rules. Anecdotes, psychology, general market commentary and personal tips stay as notes on the concept page. Before opening a new ID, check whether it is really a refinement of an existing rule — if so, update that rule.
 1. **Rules:** add each rule the video teaches as `### <PREFIX>-<NNN>: <title>` with Kural / Parametreler / Kaynak (video + mm:ss range) / Güven / Durum / İlgili. Update existing rules instead of duplicating them (append the new source).
 2. **Measurable or nothing:** a rule must be codeable without guessing ("gövde kapanışı önceki swing high üzerinde", not "güçlü kırılım"). If the instructor gives no number/threshold, **do not invent one** — leave the parameter as `?` and open a question.
 3. **Güven:** `açık kural` only if the instructor explicitly states/shows it (cite the minute). Your own formalisation of a looser explanation is `türetilmiş`.
-4. **Open questions:** close those this video answers (status `cevaplandı`, video ID, the answer with minute). Add new ones with the next free `Q-NNN`.
+4. **Open questions:** close those this video answers (status `cevaplandı` or `kısmen cevaplandı`, video ID, the answer with minute). Add new ones with the next free `Q-NNN`. If the instructor says a topic will be covered later ("ilerideki derslerde anlatacağım"), add it with status `beklenen` and write the promised topic in *Cevap*.
 5. **Contradictions:** if this video conflicts with an existing rule, do **not** silently overwrite — add a row to *Çelişkiler*, mark the rule `çelişkili`, and ask the user which applies. Course series build on themselves (early lessons simplify, later ones refine), so your recommendation should normally be the **later, topic-specific lesson by the same instructor**, but the user still decides. Once the user decides, fill the *Karar* cell, set the rule back to its new definition (Güven no longer `çelişkili`), and fix every older topic page, terminology entry and pseudo-code block that still uses the overruled definition (`grep` the wiki for the term).
 6. In topic pages, the "Bot / Uygulama İçin Çıkarılabilir Kurallar" section should reference Playbook IDs (e.g. "→ MS-004") rather than restating rules differently.
+7. Never edit the *Bilgi Durumu* block by hand — `playbook-check --write` regenerates it.
+
+---
+
+## Before the lesson
+
+Learning is active: know what you are looking for before you read the transcript.
+
+1. `playbook-check` (or `.venv/Scripts/playbook-check.exe` on Windows) — current knowledge state and any format errors left from earlier lessons (fix those first).
+2. In Playbook → *Açık Sorular*, list the questions with status `açık`, `beklenen` or `kısmen cevaplandı` whose topic matches this lesson's title/announced topic. `beklenen` rows naming this lesson's topic are the most likely to be answered.
+3. Read the Playbook rules and concept pages for that topic, so new statements can be classified as **new / refinement / contradiction** instead of being added as duplicates.
+4. Optional context: `playbook-check --last-log` prints only the previous lesson's LearningLog entry (what was left open). Never read the whole LearningLog.
+5. Note the list of target questions — it goes into the LearningLog entry as *Ders öncesi aranan*, and the Quality Report says which of them were answered.
+
+## Change propagation
+
+When a rule's meaning changes (refined, narrowed, overruled, cancelled):
+
+1. Search the wiki for the rule ID and for the term itself (e.g. `grep -rn "MS-004\|MSB" docs/wiki`).
+2. Check each rule listed in its *İlgili* field — does it still hold with the new definition? Update it (or open a question / contradiction).
+3. Fix every concept page text, terminology entry and pseudo-code block that still uses the old meaning; add one line to that page's *Tanımın Gelişimi*.
+4. List the touched rules and pages in the LearningLog entry (*İnceltilen / düzeltilen*).
 
 ---
 
@@ -196,6 +226,7 @@ Finish every processed video with this block (Turkish, concise). It is what the 
 ```
 📋 Kalite Raporu: <video başlığı>
 - Transcript: whisper | vtt · YouTube'dan doldurulan bölüm: N · kaçmış olabilecek görsel: yok / <dk + açıklama>
+- Ders öncesi aranan sorular: Q-020, Q-021 → cevaplanan: Q-020 · cevapsız kalan: Q-021
 - Yeni kurallar: SD-004 (açık kural), IMB-002 (türetilmiş) …
 - Güncellenen kurallar: MS-003 (kırılım tipi netleşti) …
 - Kapanan sorular: Q-002 → "gövde kapanışı gerekir" (12:40) …
@@ -203,7 +234,10 @@ Finish every processed video with this block (Turkish, concise). It is what the 
 - Çelişkiler: yok / <kısa açıklama — kullanıcı kararı bekleniyor>
 - Hâlâ belirsiz ifadeler: "hacimli mum" (ölçü yok) …
 - Sözlüğe eklenen altyazı hataları: N
+- Bilgi durumu: aktif kural X (koda hazır Y) · açık soru Z · beklenen W · bekleyen çelişki V  (playbook-check: hata 0)
 ```
+
+The same content (in the LearningLog format) is appended to `docs/wiki/LearningLog.md`, so the report survives the chat.
 
 ---
 
@@ -231,11 +265,13 @@ This is the single source of truth for "which videos have been analyzed." Always
 
 | Problem | Fix |
 |---------|-----|
-| `ffmpeg not found` | Windows: `export PATH="$PWD/tools/ffmpeg-9.0.2-essentials_build/bin:$PATH"`; macOS: `brew install ffmpeg` |
+| `ffmpeg not found` | Windows: `winget install Gyan.FFmpeg`, or unzip the ffmpeg "essentials" build anywhere under `./tools/` (found automatically); macOS: `brew install ffmpeg` |
+| `playbook-check` not found | `pip install -e .` again (the command was added in a later version) |
 | `UnicodeEncodeError` in console | `export PYTHONIOENCODING=utf-8` |
 | `HTTP Error 429` for `en` subtitles | Harmless if the original-language (`*-orig`) subtitle still downloaded |
 | yt-dlp "No supported JavaScript runtime" warning | Harmless for now; if downloads start failing, install `deno` |
 | `No module named spacy` | `pip install spacy && python -m spacy download en_core_web_sm` |
+| `Sign in to confirm you're not a bot` | YouTube temporarily blocked this IP (many downloads). Wait a few hours, or put a Netscape `cookies.txt` (exported with the "Get cookies.txt LOCALLY" browser extension while logged in to youtube.com) in the project root — it is picked up automatically (`--cookies FILE` / `--cookies-from-browser firefox` also work). Never commit or share the cookie file (`cookies*.txt` is gitignored). |
 | `Cannot access video` | Private, age-restricted or region-blocked |
 | No transcript found | Pass `--groq-api-key` or set `GROQ_API_KEY` |
 | Whisper: audio over 25 MB | Video longer than ~1.5h — split, or rely on YouTube subtitles |

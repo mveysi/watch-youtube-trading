@@ -1,6 +1,7 @@
 """Extract video frames at smart timestamps via ffmpeg subprocess calls."""
 
 import logging
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -13,22 +14,50 @@ _FFMPEG_TIMEOUT = 30  # seconds per frame extraction
 _MIN_FRAME_BYTES = 100  # skip black/corrupt frames smaller than this
 
 
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _find_bundled_ffmpeg() -> Path | None:
+    """Look for an ffmpeg unpacked anywhere under <project>/tools/ (any version folder)."""
+    tools = _PROJECT_ROOT / "tools"
+    if not tools.is_dir():
+        return None
+    for name in ("ffmpeg.exe", "ffmpeg"):
+        hits = sorted(tools.rglob(name), reverse=True)  # newest version folder first
+        for hit in hits:
+            if hit.is_file():
+                return hit
+    return None
+
+
+def _add_to_path(bin_dir: Path) -> None:
+    """Prepend bin_dir to PATH so yt-dlp and ffprobe lookups find the same ffmpeg."""
+    current = os.environ.get("PATH", "")
+    if str(bin_dir) not in current.split(os.pathsep):
+        os.environ["PATH"] = str(bin_dir) + os.pathsep + current
+
+
 def check_ffmpeg() -> str:
-    """Return path to ffmpeg binary or raise EnvironmentError with install tip."""
+    """Return path to ffmpeg binary or raise EnvironmentError with install tip.
+
+    Search order: PATH → <project>/tools/**/ffmpeg(.exe) → macOS Homebrew.
+    A bundled or Homebrew ffmpeg is also added to PATH for this process.
+    """
     binary = shutil.which("ffmpeg")
     if binary:
         return binary
 
-    # Common macOS Homebrew path
-    homebrew_path = Path("/opt/homebrew/bin/ffmpeg")
-    if homebrew_path.exists():
-        return str(homebrew_path)
+    for candidate in (_find_bundled_ffmpeg(), Path("/opt/homebrew/bin/ffmpeg")):
+        if candidate and candidate.exists():
+            _add_to_path(candidate.parent)
+            logger.debug(f"Using ffmpeg at {candidate}")
+            return str(candidate)
 
     raise EnvironmentError(
         "ffmpeg not found. Install it with:\n"
-        "  macOS:  brew install ffmpeg\n"
-        "  Ubuntu: sudo apt install ffmpeg\n"
-        "  Windows: https://ffmpeg.org/download.html"
+        "  Windows: winget install Gyan.FFmpeg  (or unzip the ffmpeg 'essentials' build into ./tools/)\n"
+        "  macOS:   brew install ffmpeg\n"
+        "  Ubuntu:  sudo apt install ffmpeg"
     )
 
 
@@ -36,7 +65,13 @@ def get_video_duration(video_path: Path) -> float | None:
     """Use ffprobe to get video duration in seconds. Returns None on failure."""
     ffprobe = shutil.which("ffprobe")
     if not ffprobe:
-        return None
+        try:
+            ffprobe = str(Path(check_ffmpeg()).with_name(
+                "ffprobe.exe" if os.name == "nt" else "ffprobe"))
+        except EnvironmentError:
+            return None
+        if not Path(ffprobe).exists():
+            return None
     try:
         result = subprocess.run(
             [

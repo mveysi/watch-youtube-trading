@@ -18,6 +18,7 @@ setup(
     entry_points={
         "console_scripts": [
             "watch-youtube=watch_youtube.main:cli",
+            "playbook-check=watch_youtube.playbook_check:cli",
         ],
     },
 )

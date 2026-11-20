@@ -71,9 +71,23 @@ Bu sayede `[[Videos#MtxP2pyCvYA]]` gibi bir Obsidian linki doğrudan o videodan 
 - [[OperatingSystemFundamentals]] — Fireship OS video özeti
 ```
 
-## 6. Kalite Kuralları
+## 6. Kavram Sayfaları: Güncel Bilgi + Gelişim (ders serileri)
+
+Konu sayfaları **ders özeti değil, kavram bilgisidir.** Sayfa her zaman *şu an geçerli* bilgiyi anlatır; yeni bir ders bir tanımı inceltir veya düzeltirse ana metin **yeniden yazılır** (eski hali yanında bırakılmaz), değişiklik ise en alttaki bölüme tek satır olarak eklenir:
+
+```markdown
+## Tanımın Gelişimi
+- Ders 2 ([[Videos#oQhdnKzsGyw]] 12:23): MSB = CHoCH (eş anlamlı) olarak anlatıldı.
+- Ders 5 ([[Videos#lsgS9gRoSgM]] 3:21): ikisi ayrıldı; MSB yerel kırılım, CHoCH korunması gereken seviyenin kırılması → karar: Ders 5 geçerli (MS-004, MS-009).
+```
+
+- Her değişiklik **tek satır**: ders + kaynak + ne değişti + (varsa) karar/kural ID'si. Kavram ilk kez öğrenildiğinde satır eklenmez; sadece sonraki değişiklikler yazılır.
+- Derse özgü içerik (ders sonu "neler öğrendik" slaytı, ödevler, ders akışı) konu sayfasına değil, `Videos.md` kaydına ve `LearningLog.md` kaydına gider.
+- Ana metinde "⚠️ bu tanım değişti" gibi geçici uyarı notları bırakma; karar verilene kadar uyarı Playbook → Çelişkiler'de durur, karar sonrası ana metin düzeltilir.
+
+## 7. Kalite Kuralları
 
 - Her wiki sayfası kendi başına okunabilir olmalı (bağlam bağımsız)
-- Maksimum 500 kelime per sayfa — daha uzunsa böl
+- Sayfanın **güncel içeriği** (Tanımın Gelişimi ve Transkript Notu hariç) ~1000 kelimeyi geçerse alt kavram sayfalarına böl (ör. `MarketStructure` → `TrendBreaks`). Gelişim bölümü bu sınıra sayılmaz ve sınır yüzünden asıl kurallar kısaltılmaz.
 - Teknik terimleri Türkçe açıkla ama İngilizce terimini de yaz
 - Görsel diyagramları metin olarak açıkla (ASCII veya bullet list)

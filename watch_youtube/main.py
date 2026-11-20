@@ -104,6 +104,19 @@ _DEFAULT_GLOSSARY = Path(__file__).parent.parent / "data" / "glossary_trading_tr
     help="Update the self-learning keyword store from transcript-keyword frames.",
 )
 @click.option(
+    "--cookies", "cookies_file",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=None,
+    help="Netscape cookies.txt for YouTube (use when YouTube asks to confirm you're not a bot). "
+         "If omitted, ./cookies.txt is used automatically when present.",
+)
+@click.option(
+    "--cookies-from-browser",
+    default=None,
+    metavar="BROWSER",
+    help="Read YouTube cookies from a browser profile (firefox, chrome, edge, ...). The browser should be closed.",
+)
+@click.option(
     "--verbose", "-v",
     is_flag=True,
     default=False,
@@ -124,6 +137,8 @@ def cli(
     frame_format: str,
     keep_temp: bool,
     learn: bool,
+    cookies_file: Path | None,
+    cookies_from_browser: str | None,
     verbose: bool,
 ) -> None:
     """watch-youtube: YouTube video storyboard generator for Vision LLMs.
@@ -154,7 +169,12 @@ def cli(
         check_ffmpeg()
 
         log.info("Step 1/5 ▸ Downloading transcript + video...")
-        from .downloader import download_video
+        from .downloader import download_video, set_auth
+        if cookies_file is None and not cookies_from_browser and Path("cookies.txt").is_file():
+            cookies_file = Path("cookies.txt")
+        if cookies_file or cookies_from_browser:
+            log.info(f"          YouTube auth: {'cookies file' if cookies_file else cookies_from_browser}")
+        set_auth(cookies_file, cookies_from_browser)
         result = download_video(
             url, temp_dir, groq_api_key,
             prefer_whisper=prefer_whisper,

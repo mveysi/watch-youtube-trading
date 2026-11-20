@@ -5,3 +5,4 @@ __pycache__/
 docs/wiki/
 tools/
 *.egg-info/
+cookies*.txt

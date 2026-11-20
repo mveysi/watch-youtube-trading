@@ -3,11 +3,18 @@
 **Bağlantılar:** [[Index]], [[Videos]], [[TradingTerminology]]
 **Kaynak Video:** Her kuralın kendi kaynağı aşağıda belirtilir.
 
+<!-- BILGI-DURUMU:BASLA -->
+## Bilgi Durumu
+
+_Henüz ders işlenmedi. Bu blok `playbook-check --write` ile otomatik doldurulur, elle düzenlenmez._
+<!-- BILGI-DURUMU:BITIR -->
+
 ---
 
 ## Nasıl kullanılır
 
-- Her video işlendiğinde: yeni kurallar eklenir, mevcutlar güncellenir, cevaplanan sorular kapatılır, yeni sorular açılır, çelişkiler kaydedilir.
+- Her video işlendiğinde: yeni kurallar eklenir, mevcutlar güncellenir, cevaplanan sorular kapatılır, yeni sorular açılır, çelişkiler kaydedilir. Sonra `playbook-check --write` çalıştırılır (denetim + Bilgi Durumu).
+- **Playbook'a ne girer (kabul filtresi):** bir programın **bir şeyi hesaplaması veya bir karar vermesi** için gereken her şey: tanımlar (swing, trend, bölge, imbalance nasıl tespit edilir), filtreler (haber saati, zaman dilimi uyumu), giriş/stop/hedef ve risk kuralları. **Girmez:** eğitmenin anekdotları, psikoloji, genel piyasa yorumları, motivasyon, "bence" tavsiyeleri; bunlar ilgili konu sayfasında not olarak kalır. Yeni kural açmadan önce mevcut bir kuralın inceltilmesi mi diye bak; öyleyse onu güncelle.
 - **Kural kimlikleri:** `PA-` Price Action temel · `MS-` Market Structure · `SMC-` Smart Money · `SD-` Supply & Demand · `IMB-` Imbalance · `LIQ-` Likidite · `OB-` Order Block · `ENT-` Giriş · `RISK-` Risk/kasa yönetimi. Numara bir kez verildikten sonra değişmez; kural iptal edilirse silinmez, **Durum: iptal** yazılır.
 - **Güven** alanı zorunlu:
   - `açık kural`: eğitmen bunu açıkça söyledi/gösterdi (dakikası belli)
@@ -42,6 +49,8 @@ Kural formatı:
 ---
 
 ## Açık Sorular
+
+Durum değerleri: `açık` · `beklenen` (eğitmen "ilerideki derslerde anlatacağım" dedi; Cevap sütununa hangi konu/ders yazılır) · `kısmen cevaplandı` · `cevaplandı` · `iptal`. Yeni bir ders işlenmeden önce bu tablo okunur; ders bu soruları cevaplıyor mu diye bakılır.
 
 | ID | Soru | Durum | Açıldığı video | Cevaplandığı video | Cevap |
 |----|------|-------|----------------|--------------------|-------|

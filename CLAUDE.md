@@ -1,6 +1,6 @@
 # YouTube Knowledge Base — Claude Talimatları
 
-Bu proje, YouTube videolarından bilgi çıkaran ve `docs/wiki/` içinde Obsidian formatında saklayan bir sistemdir.
+Bu proje, YouTube ders videolarından **bilgi biriktiren** ve `docs/wiki/` içinde Obsidian formatında saklayan bir sistemdir. Amaç dersleri tek tek özetlemek değil: her yeni ders mevcut bilgiye eklenir, onu inceltir veya düzeltir (seriler üst üste inşa edilir). Güncel bilgi konu sayfalarında ve `Playbook.md`'de, bilginin nasıl oluştuğu `LearningLog.md`'de durur.
 
 ## Genel Çalışma Kuralı
 
@@ -8,7 +8,7 @@ Kullanıcı bir konu veya video hakkında soru sorduğunda şu sırayı takip et
 
 ### 0. İlk kullanım
 
-`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki dosyaları (`Index.md`, `Videos.md`, `Playbook.md`) oraya kopyala.
+`docs/wiki/` klasörü yoksa (repo yeni klonlandıysa) oluştur ve `docs/wiki_template/` içindeki dosyaları (`Index.md`, `Videos.md`, `Playbook.md`, `LearningLog.md`) oraya kopyala. Klasör varsa ama şablondaki bir dosya eksikse (ör. güncellemeden sonra `LearningLog.md`) sadece onu kopyala.
 
 ### 1. Önce wiki'yi kontrol et
 
@@ -67,7 +67,9 @@ watch_youtube/       # Python paketi — CLI ve pipeline
 docs/wiki/
   Index.md           # Ana harita — HER ZAMAN buradan başla
   Videos.md          # Analiz edilmiş videoların kayıt defteri
-  *.md               # Konu bazlı wiki sayfaları
+  Playbook.md        # Koda çevrilebilir kurallar + açık sorular + çelişkiler + Bilgi Durumu panosu
+  LearningLog.md     # Ders ders öğrenme günlüğü (sadece sona eklenir, baştan okunmaz)
+  *.md               # Kavram sayfaları (güncel bilgi + "Tanımın Gelişimi")
 output/              # Oluşturulan storyboard JPEG'leri
 ```
 
@@ -76,8 +78,9 @@ output/              # Oluşturulan storyboard JPEG'leri
 Windows (Git Bash, proje kökünden):
 
 ```bash
-export PATH="$PWD/tools/ffmpeg-9.0.2-essentials_build/bin:$PATH" PYTHONIOENCODING=utf-8
+export PYTHONIOENCODING=utf-8
 .venv/Scripts/watch-youtube.exe "<URL>" -o ./output -v
+.venv/Scripts/playbook-check.exe          # bilgi durumu + Playbook denetimi (--write: panoyu güncelle, --last-log: son öğrenme kaydı)
 ```
 
 macOS / Linux:
@@ -85,6 +88,7 @@ macOS / Linux:
 ```bash
 source .venv/bin/activate
 watch-youtube "<URL>" -o ./output -v
+playbook-check
 ```
 
 Çıktılar `output/<video_id>/` altında: `storyboard_page_*.jpg`, `transcript.txt` (`[yt]` = YouTube altyazısıyla onarılmış paragraf), `transcript_raw.vtt` veya Whisper ile `transcript_raw.srt` + `transcript_raw_youtube.vtt`, `metadata.json`. Groq anahtarı varsa her zaman `--whisper -l tr` kullan. Wiki yazarken storyboard'larla birlikte `transcript.txt` dosyasını da oku. Türkçe altyazı hataları için `data/glossary_trading_tr.json` dosyasına bak. Tüm seçenekler için `.claude/skills/watch-youtube/SKILL.md` dosyasına bak.
@@ -92,7 +96,7 @@ watch-youtube "<URL>" -o ./output -v
 ## Bağımlılıklar
 
 - Python 3.11+, `.venv` aktif olmalı
-- `ffmpeg` kurulu olmalı (Windows: `winget install Gyan.FFmpeg`, macOS: `brew install ffmpeg`)
+- `ffmpeg` kurulu olmalı (Windows: `winget install Gyan.FFmpeg` veya zip'i `tools/` altına çıkar, otomatik bulunur; macOS: `brew install ffmpeg`)
 - `spaCy` en_core_web_sm modeli kurulu olmalı
 
 ## wiki-schema Kuralları

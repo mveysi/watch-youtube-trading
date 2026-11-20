@@ -109,7 +109,7 @@ Kurulumdan sonra **terminali kapatıp yeniden aç** ve kontrol et:
 ffmpeg -version
 ```
 
-> `winget` yoksa: [ffmpeg.org/download.html](https://ffmpeg.org/download.html) adresinden Windows "essentials" paketini indir ve zip'i proje içinde `tools/` klasörüne çıkar (sonuç: `tools/ffmpeg-<sürüm>-essentials_build/bin/ffmpeg.exe`). Bu klasör GitHub'a yüklenmez.
+> `winget` yoksa: [ffmpeg.org/download.html](https://ffmpeg.org/download.html) adresinden Windows "essentials" paketini indir ve zip'i proje içinde `tools/` klasörüne çıkar (sonuç: `tools/ffmpeg-<sürüm>-essentials_build/bin/ffmpeg.exe`). Sürüm klasörünün adı önemli değil, araç `tools/` altını otomatik tarar; PATH ayarı gerekmez. Bu klasör GitHub'a yüklenmez.
 
 **5) Türkçe karakter ayarı** (konsolda `UnicodeEncodeError` almamak için)
 
@@ -196,7 +196,11 @@ watch-youtube --help         # test
    - Video daha önce işlendiyse tekrar işlemez, wiki'den cevaplar.
    - İşlenmediyse `watch-youtube` aracını çalıştırır.
    - Storyboard'ları ve tam transcript'i okur, altyazı hatalarını düzeltir.
-   - `docs/wiki/` altına konu sayfalarını yazar, `Videos.md` ve `Index.md` dosyalarını günceller.
+   - Dersi okumadan önce Playbook'taki açık soruları ve konuyla ilgili kuralları okur ("bu derste neyi arıyorum?").
+   - Yeni bilgiyi mevcut bilgiyle karşılaştırır: **yeni** mi, mevcut bir kuralın **inceltilmesi** mi, yoksa **çelişki** mi. Çelişkide kararı sana sorar.
+   - Bir kural değişirse ona bağlı kuralları ve onu kullanan bütün sayfaları da düzeltir.
+   - `docs/wiki/` altındaki kavram sayfalarını, `Playbook.md`, `Videos.md` ve `Index.md` dosyalarını günceller, `playbook-check` ile denetler.
+   - `LearningLog.md` öğrenme günlüğüne bu dersin kaydını ekler ve sana kısa bir **Kalite Raporu** verir.
 4. Sonra soru sor:
    ```
    Market yapısında BOS ile MSB arasındaki fark ne?
@@ -204,6 +208,17 @@ watch-youtube --help         # test
    Claude önce wiki'ye bakar ve cevabı hangi sayfadan/videodan aldığını belirtir. Konu wiki'de yoksa sana ilgili bir video linki ister.
 
 > **İlk kullanımda** `docs/wiki/` klasörü yoksa Claude onu `docs/wiki_template/` içindeki boş şablonlardan oluşturur.
+
+### Sistem nasıl "öğreniyor"?
+
+Ders serileri üst üste inşa edilir: ilk dersler bir kavramı basit anlatır, sonrakiler inceltir ya da düzeltir. Bu yüzden wiki **ders özetlerinden değil, kavram bilgisinden** oluşur:
+
+- **Kavram sayfaları** her zaman *şu an geçerli* bilgiyi anlatır. Bir tanım değişince metin yeniden yazılır; sayfanın sonundaki **"Tanımın Gelişimi"** bölümüne tek satırlık bir not düşülür (hangi ders, ne değişti).
+- **`Playbook.md`** koda çevrilebilir kuralların, açık soruların ve çelişkilerin listesidir. En üstteki **Bilgi Durumu** panosu kaç kural olduğunu, kaçının koda hazır olduğunu (belirsiz parametresi kalmamış) ve kaç sorunun açık olduğunu gösterir. Her dersten sonra bu sayılar değişir: sistemin öğrenme eğrisi budur.
+- **`LearningLog.md`** her dersin ne kattığını kaydeder (yeni / inceltilen / kapanan soru / yeni soru). Sadece sona eklenir.
+- **Açık sorular** sistemin neyi henüz bilmediğidir. Eğitmen "bunu ileride anlatacağım" derse soru `beklenen` olarak işaretlenir ve o ders gelince kapanır.
+
+Bilgi durumunu kendin görmek için: `playbook-check` (Windows: `.venv\Scripts\playbook-check.exe`).
 
 **Wiki'yi okumak için:** `docs/wiki/` klasörü [Obsidian](https://obsidian.md/) ile açılırsa sayfalar arası `[[bağlantılar]]` tıklanabilir ve konu haritası grafik olarak görülebilir. Normal bir metin editörüyle de okunabilir.
 
@@ -225,6 +240,11 @@ watch-youtube "https://www.youtube.com/watch?v=VIDEO_ID" -o ./output --whisper -
 
 # Kare sayısını elle belirle
 watch-youtube "https://www.youtube.com/watch?v=VIDEO_ID" -o ./output -n 40
+
+# Wiki'nin bilgi durumu + Playbook format denetimi
+playbook-check                # sadece göster
+playbook-check --write        # Playbook'taki Bilgi Durumu panosunu da güncelle
+playbook-check --last-log     # öğrenme günlüğünün son kaydı
 ```
 
 macOS/Linux'ta önce `source .venv/bin/activate`, komutlar aynı.
@@ -251,8 +271,9 @@ Wiki dosyaları (`docs/wiki/`):
 |------|--------|
 | `Index.md` | Ana harita: tüm konu sayfalarının listesi |
 | `Videos.md` | İşlenmiş videoların kayıt defteri (hangi videodan hangi sayfalar çıktı) |
-| `Playbook.md` | **Tüm işlem kurallarının tek, ölçülebilir listesi** (ID'li, kaynak video + dakika, güven seviyesi) + açık sorular + çelişkiler. İleride analiz/backtest sistemi bu dosyayı okuyacak. |
-| `<Konu>.md` | Konu sayfaları. Her birinin başında **Özet, Teknolojiler, Bağlantılar, Kaynak Video** alanları var. Trading konularında ayrıca **"Bot / Uygulama İçin Çıkarılabilir Kurallar"** ve **"Açık sorular"** bölümleri bulunur. |
+| `Playbook.md` | **Tüm işlem kurallarının tek, ölçülebilir listesi** (ID'li, kaynak video + dakika, güven seviyesi) + açık sorular + çelişkiler + otomatik **Bilgi Durumu** panosu. İleride analiz/backtest sistemi bu dosyayı okuyacak. |
+| `LearningLog.md` | Öğrenme günlüğü: her dersin neyi yeni öğrettiği, neyi inceltip düzelttiği, hangi soruları kapattığı. Sadece sona eklenir. |
+| `<Konu>.md` | Kavram sayfaları: her zaman güncel bilgi, sonda **"Tanımın Gelişimi"**. Her birinin başında **Özet, Teknolojiler, Bağlantılar, Kaynak Video** alanları var. Trading konularında ayrıca **"Bot / Uygulama İçin Çıkarılabilir Kurallar"** ve **"Açık sorular"** bölümleri bulunur. |
 
 ---
 
@@ -272,6 +293,8 @@ Wiki dosyaları (`docs/wiki/`):
 | `-q, --jpeg-quality` | `85` | Storyboard JPEG kalitesi (1–95) |
 | `-g, --silence-gap` | `5.0` | (`transcript` modu) Sessizlik eşiği, saniye |
 | `--keep-temp` | kapalı | İndirilen videoyu ve ham kareleri silme |
+| `--cookies` | `./cookies.txt` varsa o | YouTube "bot değilim" engeli için çerez dosyası |
+| `--cookies-from-browser` | — | Çerezleri tarayıcıdan oku (`firefox`, `chrome`, `edge`; tarayıcı kapalı olmalı) |
 | `-v, --verbose` | kapalı | Ayrıntılı log |
 
 ---
@@ -282,7 +305,7 @@ Wiki dosyaları (`docs/wiki/`):
 ├── CLAUDE.md                     # Claude Code'un bu projede nasıl çalışacağını anlatan talimatlar
 ├── README.md                     # Bu dosya
 ├── DEGISIKLIKLER.md              # Orijinal projeye göre yapılan değişiklikler
-├── YOL_HARITASI.md               # Sıradaki görevler: Whisper düzeltmesi, Playbook, seriyi işleme
+├── YOL_HARITASI.md               # Arkadaş için görev rehberi: seriyi baştan işleme
 ├── requirements.txt / setup.py   # Python bağımlılıkları ve kurulum
 │
 ├── watch_youtube/                # Python aracı
@@ -290,8 +313,9 @@ Wiki dosyaları (`docs/wiki/`):
 │   ├── downloader.py             # yt-dlp ile altyazı/video indirme, Groq Whisper
 │   ├── scenes.py                 # Ekran değişimi tespiti ve kare seçimi
 │   ├── analyzer.py               # Transcript'ten ipucu çıkarma (TR + EN), öğrenen kelime deposu
-│   ├── extractor.py              # ffmpeg ile kare alma, siyah kare eleme
-│   └── compiler.py               # Storyboard ızgaralarını oluşturma
+│   ├── extractor.py              # ffmpeg ile kare alma (ffmpeg'i PATH'te veya tools/ altında bulur), siyah kare eleme
+│   ├── compiler.py               # Storyboard ızgaralarını oluşturma
+│   └── playbook_check.py         # playbook-check: Playbook denetimi + Bilgi Durumu panosu
 │
 ├── .claude/skills/
 │   ├── watch-youtube/SKILL.md    # Claude'un video işleme talimatları
@@ -368,6 +392,7 @@ Bu yöntem dilden bağımsızdır. Eski yöntem (`--frames transcript`) İngiliz
 |---|---|
 | `watch-youtube` komutu bulunamadı | Sanal ortam etkin değil: Windows `.venv\Scripts\Activate.ps1`, mac/Linux `source .venv/bin/activate`. Sonra `pip install -e .` |
 | `running scripts is disabled` (PowerShell) | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+| `Sign in to confirm you're not a bot` | YouTube bu bağlantıyı geçici olarak engelledi (çok sayıda indirme). Birkaç saat bekle **veya** Chrome'a "Get cookies.txt LOCALLY" eklentisini kur, youtube.com'da giriş yapmışken **Export** de, dosyayı `cookies.txt` adıyla proje klasörüne koy; araç otomatik kullanır. Bu dosya oturum anahtarın gibidir: kimseyle paylaşma (GitHub'a yüklenmesi engelli). |
 | `ffmpeg not found` | Windows `winget install Gyan.FFmpeg` (sonra terminali yeniden aç), macOS `brew install ffmpeg`, Ubuntu `sudo apt install ffmpeg` |
 | `UnicodeEncodeError` | Windows: `setx PYTHONIOENCODING utf-8` ve terminali yeniden aç |
 | `No module named spacy` / model hatası | `pip install -r requirements.txt` ve `python -m spacy download en_core_web_sm` |

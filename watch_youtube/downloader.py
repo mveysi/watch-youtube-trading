@@ -17,6 +17,23 @@ _TIMECODE_RE = re.compile(r"(\d+):(\d{2}):(\d{2})[.,](\d+)")
 _HTML_TAG_RE = re.compile(r"<[^>]+>")
 _WHITESPACE_RE = re.compile(r"\s+")
 
+# YouTube authentication (only needed when YouTube answers "Sign in to confirm you're not a bot").
+# Set once via set_auth(); merged into every yt-dlp call. Cookies are only read, never written.
+_AUTH_OPTS: dict = {}
+
+
+def set_auth(cookies_file: Path | None = None, cookies_from_browser: str | None = None) -> None:
+    """Configure yt-dlp authentication from a Netscape cookies.txt file or a browser profile."""
+    _AUTH_OPTS.clear()
+    if cookies_file:
+        _AUTH_OPTS["cookiefile"] = str(cookies_file)
+    elif cookies_from_browser:
+        _AUTH_OPTS["cookiesfrombrowser"] = (cookies_from_browser,)
+
+
+def _ydl(opts: dict) -> "yt_dlp.YoutubeDL":
+    return yt_dlp.YoutubeDL({**opts, **_AUTH_OPTS})
+
 
 def extract_video_id(url: str) -> str:
     """Extract YouTube video ID from URL. Falls back to 'unknown'."""
@@ -188,7 +205,7 @@ def _download_transcript(
     subtitle_error: Exception | None = None
     info: dict = {}
     try:
-        with yt_dlp.YoutubeDL(opts) as ydl:
+        with _ydl(opts) as ydl:
             info = ydl.extract_info(url, download=True) or {}
     except yt_dlp.utils.DownloadError as e:
         subtitle_error = e
@@ -234,7 +251,7 @@ def _download_audio(url: str, output_dir: Path) -> Path:
         # for videos up to ~1.5h, with no loss for speech recognition.
         "postprocessor_args": {"extractaudio": ["-ac", "1", "-ar", "16000", "-b:a", "32k"]},
     }
-    with yt_dlp.YoutubeDL(opts) as ydl:
+    with _ydl(opts) as ydl:
         ydl.download([url])
 
     matches = list(output_dir.glob("*_audio.mp3"))
@@ -271,7 +288,7 @@ def _download_video_file(url: str, output_dir: Path) -> tuple[Path, dict]:
             opts["extractor_args"] = {"youtube": {"player_client": client}}
         label = client[0] if client else "default"
         try:
-            with yt_dlp.YoutubeDL(opts) as ydl:
+            with _ydl(opts) as ydl:
                 info = ydl.extract_info(url, download=True) or {}
         except yt_dlp.utils.DownloadError as e:
             last_problem = f"{label}: {e}"

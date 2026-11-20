@@ -1,6 +1,6 @@
-**Özet:** Videolardan öğrenilen tüm işlem kurallarının tek, kesin ve ölçülebilir listesi. Konu sayfaları (ör. [[MarketStructure]]) bir konuyu anlatır; Playbook ise **koda çevrilebilecek kuralları** ve henüz cevaplanmamış soruları tutar. İleride analiz/backtest sistemi sadece bu dosyayı okuyacak.
+**Özet:** Videolardan öğrenilen tüm işlem kurallarının tek, kesin ve ölçülebilir listesi. Konu sayfaları (ör. MarketStructure) bir konuyu anlatır; Playbook ise **koda çevrilebilecek kuralları** ve henüz cevaplanmamış soruları tutar. İleride analiz/backtest sistemi sadece bu dosyayı okuyacak.
 **Kütüphaneler/Teknolojiler:** Price Action, Market Structure, Smart Money Concepts, Supply & Demand
-**Bağlantılar:** [[Index]], [[Videos]], [[TradingTerminology]]
+**Bağlantılar:** [[Index]], [[Videos]], [[LearningLog]]
 **Kaynak Video:** Her kuralın kendi kaynağı aşağıda belirtilir.
 
 <!-- BILGI-DURUMU:BASLA -->
@@ -62,6 +62,8 @@ Durum değerleri: `açık` · `beklenen` (eğitmen "ilerideki derslerde anlataca
 İki kaynak aynı konuda farklı kural verirse ikisi de yazılır; hangisinin geçerli olduğu **kullanıcıya sorulur**, kendi başına seçilmez.
 
 Ders serileri üst üste inşa edilir: ilk dersler kavramı basit anlatır, sonrakiler inceltir. Bu yüzden önerilen varsayılan, **aynı eğitmenin sonraki, konuya özel dersidir**. Karar verilince eski tanımı kullanan tüm konu sayfaları da düzeltilir.
+
+*Karar* sütunu: karar beklenirken `⏳ Kullanıcı kararı bekleniyor. Öneri: …`; karar verilince `✅ <karar> (kullanıcı kararı, YYYY-AA-GG)` diye başlar.
 
 | Konu | Kaynak A (kural) | Kaynak B (kural) | Karar |
 |------|------------------|------------------|-------|

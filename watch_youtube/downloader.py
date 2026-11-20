@@ -200,8 +200,11 @@ def _download_transcript(
         "subtitleslangs": langs,
         "subtitlesformat": "vtt",
         "skip_download": True,
-        "extractor_args": {"youtube": {"player_client": ["android"]}},
     }
+    if not _AUTH_OPTS:
+        # android avoids some subtitle rate limits, but it does not support cookies —
+        # with cookies (bot-check workaround) the default client must be used.
+        opts["extractor_args"] = {"youtube": {"player_client": ["android"]}}
     subtitle_error: Exception | None = None
     info: dict = {}
     try:
@@ -247,8 +250,8 @@ def _download_audio(url: str, output_dir: Path) -> Path:
         # Prefer the original audio track over YouTube's AI-dubbed ones.
         "format": "bestaudio[format_note*=original]/bestaudio/best",
         "postprocessors": [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3"}],
-        # Mono 16 kHz 32 kbps ≈ 14 MB/hour — stays under Groq's 25 MB upload limit
-        # for videos up to ~1.5h, with no loss for speech recognition.
+        # Mono 16 kHz 32 kbps ≈ 14 MB/hour; Whisper gets 10-minute chunks (~2.4 MB each),
+        # so Groq's 25 MB per-request limit is never reached, whatever the video length.
         "postprocessor_args": {"extractaudio": ["-ac", "1", "-ar", "16000", "-b:a", "32k"]},
     }
     with _ydl(opts) as ydl:
@@ -263,7 +266,7 @@ def _download_audio(url: str, output_dir: Path) -> Path:
 # Player clients tried in order. The default client returned complete 720p files
 # in testing; the "android" client sometimes returns a truncated 360p file that
 # yt-dlp still reports as 100% downloaded (seen on a 23-min lecture: 583 KB).
-_VIDEO_CLIENTS: list[list[str] | None] = [None, ["android"]]
+_VIDEO_CLIENTS: list[list[str] | None] = [None, ["android"]]  # android skipped when cookies are set
 
 
 def _download_video_file(url: str, output_dir: Path) -> tuple[Path, dict]:

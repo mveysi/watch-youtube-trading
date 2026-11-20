@@ -8,7 +8,8 @@ Bu dosya ana haritadır — her zaman buradan başla.
 -->
 
 ## Kurallar
-- [[Playbook]] — Öğrenilen tüm işlem kurallarının tek, ölçülebilir listesi + açık sorular + çelişkiler
+- [[Playbook]] — Öğrenilen tüm işlem kurallarının tek, ölçülebilir listesi + açık sorular + çelişkiler + Bilgi Durumu
+- [[LearningLog]] — Ders ders öğrenme günlüğü (ne yeni öğrenildi, ne inceltildi/düzeltildi)
 
 ## Video Notes
 - [[Videos]] — Analiz edilmiş tüm videoların kayıt defteri

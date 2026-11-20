@@ -400,7 +400,7 @@ Bu yöntem dilden bağımsızdır. Eski yöntem (`--frames transcript`) İngiliz
 | `No supported JavaScript runtime` uyarısı | Şimdilik zararsız. İndirmeler bozulursa [deno](https://deno.com/) kur. |
 | `Cannot access video` | Video gizli, yaş kısıtlamalı veya bölge engelli olabilir |
 | `--whisper` çalışmıyor | `GROQ_API_KEY` tanımlı mı? (Windows: `echo $env:GROQ_API_KEY`). `setx` sonrası terminal yeniden açılmalı. |
-| Whisper: "over Groq's 25 MB limit" | Video ~1.5 saatten uzun; `--whisper` olmadan YouTube altyazısıyla çalıştır |
+| Whisper: "over Groq's 25 MB limit" | Normalde olmaz: ses 10 dakikalık parçalar halinde (~2,4 MB) gönderilir. Görürsen `--whisper` olmadan YouTube altyazısıyla çalıştır ve hatayı bildir |
 
 ---
 

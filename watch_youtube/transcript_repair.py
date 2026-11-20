@@ -121,7 +121,7 @@ def repair_with_fallback(
 ) -> tuple[list[TranscriptEntry], int]:
     """Replace bad Whisper ranges with fallback (YouTube) lines.
 
-    Returns (entries, number_of_ranges_repaired). Without a fallback the bad
+    Returns (entries, number_of_ranges_filled_from_fallback). Without a fallback the bad
     looping segments are dropped (an empty stretch is better than garbage).
     """
     turkish = language == "tr" or (language is None and looks_turkish(whisper))
@@ -150,4 +150,5 @@ def repair_with_fallback(
     else:
         logger.info(f"Whisper: {len(bad)} broken range(s) detected, {repaired} filled from YouTube subtitles")
     out = sorted(kept + filled, key=lambda e: e.start_sec)
-    return out, len(bad)
+    # Report only ranges actually filled from YouTube; dropped-only ranges are not "repaired".
+    return out, repaired

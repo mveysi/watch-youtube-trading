@@ -77,3 +77,12 @@ Amaç dersleri tek tek özetlemek değil, seri ilerledikçe tek ve tutarlı bir 
 | **Çelişki ilkesi** | Önerilen varsayılan: aynı eğitmenin sonraki, konuya özel dersi; karar yine kullanıcıda. |
 | **ffmpeg otomatik bulma** (`extractor.py`) | PATH'te yoksa proje içindeki `tools/**/ffmpeg(.exe)` aranır (sürüm klasörü adı önemsiz) ve PATH'e eklenir; ffprobe de oradan bulunur. Başka bir bilgisayarda sabit `ffmpeg-9.0.2` yolu yüzünden hata çıkmaz. |
 | **YouTube çerez desteği** (`--cookies`, `--cookies-from-browser`, `./cookies.txt` otomatik) | Çok sayıda indirmeden sonra YouTube IP'yi "bot değilim" doğrulamasıyla engelledi (tüm videolar, tüm istemciler). Çerezler sadece okunur; `cookies*.txt` gitignore'da. |
+
+### Ek 3 düzeltmeleri (Gemini incelemesi sonrası)
+
+| Düzeltme | Neden |
+|---------|-------|
+| `transcript_repair`: sadece gerçekten doldurulan bölüm sayısı döner | YouTube altyazısı yokken silinen bölümler için de "N bölüm YouTube altyazısıyla dolduruldu" notu yazılıyordu. |
+| Çerez varken altyazı adımında `android` istemcisi zorlanmaz | `android` istemcisi çerezi desteklemiyor; bot engelinde çerezle çalışırken altyazı alınamayabilirdi. |
+| `playbook-check`: çelişki "açık" sayılması esnetildi (boş / `⏳` / "bekleniyor"); `✅`/`⏳` kuralı şablon ve SKILL'e yazıldı; HTML yorumları denetimden hariç | `✅` ile başlamayan kararlar sürekli açık görünüyordu; şablondaki örnek yorum gereksiz uyarı üretiyordu. Boş şablon artık 0 uyarı. |
+| Index şablonuna `[[LearningLog]]`; 25 MB notları güncellendi | Ses 10 dk'lık parçalarla gönderildiği için 25 MB sınırı pratikte aşılmıyor. |

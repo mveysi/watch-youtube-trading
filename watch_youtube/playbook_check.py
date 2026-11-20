@@ -83,6 +83,7 @@ class Report:
 def _strip_code(text: str) -> str:
     """Remove fenced and inline code so format examples are not checked."""
     text = re.sub(r"```.*?```", "", text, flags=re.S)
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
     return re.sub(r"`[^`\n]*`", "", text)
 
 
@@ -157,6 +158,14 @@ def parse_contradictions(playbook: str) -> list[str]:
     return decisions
 
 
+def _is_pending(decision: str) -> bool:
+    """A contradiction is open when its Karar cell is empty, a dash, ⏳ or says it is waiting."""
+    d = decision.strip().lower()
+    if d.startswith("✅"):
+        return False
+    return d in ("", "-", "—", "?") or d.startswith("⏳") or "bekleniyor" in d or "bekliyor" in d
+
+
 def _q_status_key(status: str) -> str:
     for s in ("kısmen cevaplandı", "cevaplandı", "beklenen", "iptal", "açık"):
         if status.startswith(s):
@@ -222,7 +231,7 @@ def check_wiki(wiki: Path) -> tuple[Report, dict]:
                 rep.warn(f"{name}.md: [[{target}]] sayfası henüz yok (planlanmış olabilir)")
 
     # --- contradictions ---
-    pending = [d for d in decisions if not d.startswith("✅")]
+    pending = [d for d in decisions if _is_pending(d)]
     conflicted = [r.id for r in rules if r.guven.startswith("çelişkili")]
     if conflicted and not pending:
         rep.warn(f"Güveni 'çelişkili' olan kural var ({', '.join(conflicted)}) ama Çelişkiler'de bekleyen satır yok")

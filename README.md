@@ -280,6 +280,7 @@ Wiki dosyaları (`docs/wiki/`):
 ├── CLAUDE.md                     # Claude Code'un bu projede nasıl çalışacağını anlatan talimatlar
 ├── README.md                     # Bu dosya
 ├── DEGISIKLIKLER.md              # Orijinal projeye göre yapılan değişiklikler
+├── YOL_HARITASI.md               # Sıradaki görevler: Whisper düzeltmesi, Playbook, seriyi işleme
 ├── requirements.txt / setup.py   # Python bağımlılıkları ve kurulum
 │
 ├── watch_youtube/                # Python aracı

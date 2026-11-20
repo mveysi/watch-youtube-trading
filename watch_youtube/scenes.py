@@ -51,7 +51,7 @@ def detect_scene_changes(
         ffmpeg_bin, "-hide_banner", "-nostats",
         "-i", str(video_path),
         "-an",
-        "-vf", f"scale=320:-2,select='gt(scene,{threshold})',metadata=print",
+        "-vf", f"scale=640:-2,select='gt(scene,{threshold})',metadata=print",
         "-f", "null", "-",
     ]
     try:

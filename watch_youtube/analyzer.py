@@ -1,6 +1,7 @@
 """NLP-powered timestamp extraction with a self-learning keyword store."""
 
 import json
+import re
 import logging
 from pathlib import Path
 
@@ -214,7 +215,17 @@ def _extract_keyword_timestamps(
                 matched_reason = f"keyword:{phrase}"
                 best_weight = kentry.weight
 
-        # 2. Domain cluster term matching
+        # 2. Domain cluster term matching.
+        # English: spaCy lemma, exact match. Turkish is agglutinative and the
+        # English model doesn't strip suffixes, so also match word *prefixes*
+        # ("dirençten", "kırılımı", "mumun" → direnç / kırılım / mum).
+        if best_weight < 0.6:
+            for word in re.findall(r"\w+", text_lower):
+                stem = next((t for t in cluster_terms if len(t) >= 3 and word.startswith(t)), None)
+                if stem:
+                    matched_reason = f"keyword:{stem}"
+                    best_weight = cluster_terms[stem]
+                    break
         if nlp is not None:
             doc = nlp(entry.text)
             for token in doc:

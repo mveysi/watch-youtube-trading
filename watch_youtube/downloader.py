@@ -3,6 +3,7 @@
 import re
 import time
 import logging
+from collections import deque
 from pathlib import Path
 
 import yt_dlp
@@ -129,7 +130,9 @@ def _download_transcript(url: str, output_dir: Path) -> tuple[Path | None, str]:
     for ext in ("vtt", "srt"):
         matches = list(output_dir.glob(f"*.{ext}"))
         if matches:
-            matches.sort(key=lambda p: 0 if ".en." in p.name else 1)
+            # Prefer the original spoken language ("<lang>-orig") over YouTube's
+            # machine translations; English only as a last resort.
+            matches.sort(key=lambda p: 0 if "-orig." in p.name else (2 if ".en" in p.name else 1))
             return matches[0], ext
 
     if subtitle_error is not None:
@@ -256,13 +259,16 @@ def _parse_vtt(path: Path) -> list[TranscriptEntry]:
         # Some auto-captions have malformed headers; fall back to raw read
         captions = webvtt.read_buffer(path.read_text(encoding="utf-8", errors="replace").splitlines(keepends=True))
 
-    seen: set[str] = set()
+    # Auto-captions repeat each line across a few consecutive cues (rolling window).
+    # Only dedupe against the last few kept lines — a global set would also delete
+    # phrases the speaker genuinely repeats later ("burada kırılım var").
+    recent: deque[str] = deque(maxlen=3)
     for cap in captions:
         clean = _HTML_TAG_RE.sub("", cap.text)
         clean = _WHITESPACE_RE.sub(" ", clean).strip()
-        if not clean or clean in seen:
+        if not clean or clean in recent:
             continue
-        seen.add(clean)
+        recent.append(clean)
         entries.append(TranscriptEntry(
             start_sec=_timecode_to_seconds(cap.start),
             end_sec=_timecode_to_seconds(cap.end),

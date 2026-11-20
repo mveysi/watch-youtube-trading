@@ -187,7 +187,7 @@ def _wrap_text(
     lines: list[str] = []
     current = ""
 
-    for word in words:
+    for idx, word in enumerate(words):
         test = (current + " " + word).strip()
         try:
             width = draw.textlength(test, font=font)
@@ -202,7 +202,7 @@ def _wrap_text(
             current = word
             if len(lines) >= 2:
                 # We're at the 3rd line limit — add truncated remainder
-                remaining_words = words[words.index(word):]
+                remaining_words = words[idx:]
                 lines.append((" ".join(remaining_words))[:60] + "...")
                 return lines[:3]
 

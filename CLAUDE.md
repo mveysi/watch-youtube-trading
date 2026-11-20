@@ -22,6 +22,11 @@ Oturum açılışında, compact'tan ve resume'dan sonra `.claude/hooks/devam_not
 3. Özellikle şunları Türkçe özetle: ANAYASA/beklenen/klasör dışı değişiklik var mı, PLAN.md → Plan Değişiklik Günlüğü'ne yeni satır eklenmiş mi ve onaylı mı, kabul kriterleri gevşetilmiş mi, `DEVAM.md`'deki durum.
 4. `main`'e birleştirme yalnızca proje sahibi açıkça isterse.
 
+**"beklenen dosyasını main'e al" (dondurma) denirse:**
+1. `git fetch origin` → dosyanın `origin/asama-2` sürümünü göster; durum satırı `> **Durum: ONAYLANDI (YYYY-AA-GG)**` mı, tablo eğitmenin grafiğiyle tutarlı mı kontrol et ve proje sahibine özetle.
+2. Onay gelirse `main`'de sadece o dosyayı al: `git checkout origin/asama-2 -- asama2_kripto_analiz/beklenen/<dosya>` → commit → (onayla) push.
+3. Arkadaşa "`git fetch` + `git merge origin/main`" yapmasını söylemesini hatırlat.
+
 ## Genel Çalışma Kuralı
 
 Kullanıcı bir konu veya video hakkında soru sorduğunda şu sırayı takip et:

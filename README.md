@@ -8,6 +8,8 @@ Bir video linki verirsin. Araç videoyu indirir, **konuşulanları yazıya döke
 > - **Aşama 1: Öğrenme** (bu README'nin konusu): YouTube derslerinden işlem kurallarını öğrenip `docs/wiki/Playbook.md` içinde biriktirir. Çalışır durumda.
 > - **Aşama 2: Kripto analiz** ([asama2_kripto_analiz/](asama2_kripto_analiz/)): Playbook'taki kuralları Binance mum verisi üzerinde Python ile hesaplayacak motor. **Şu an sadece plan.** Aşama 1'den bağımsızdır.
 >
+> **İki aşamayı nasıl ilerleteceğin (adım adım, nerede durup danışacağın): [YOL_HARITASI.md](YOL_HARITASI.md).**
+>
 > **Sadece Aşama 2 planını indirmek için:** GitHub'da dal seçicisinden **`asama2-plan`** dalını seç → **Code → Download ZIP**. Komut satırından: `git clone -b asama2-plan --single-branch https://github.com/mveysi/watch-youtube-trading.git asama2-plan`
 
 > **Kimin için?** Bir konuyu (ör. borsa / Price Action eğitimi) YouTube videolarından öğrenip bu bilgiyi kalıcı, aranabilir ve ileride başka sistemlerde (ör. bir analiz botunda) kullanılabilir halde tutmak isteyenler için.
